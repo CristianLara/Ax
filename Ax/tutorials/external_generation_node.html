@@ -1,0 +1,372 @@
+<!DOCTYPE html><html lang=""><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Ax · Adaptive Experimentation Platform</title><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Adaptive Experimentation Platform"/><meta property="og:title" content="Ax · Adaptive Experimentation Platform"/><meta property="og:type" content="website"/><meta property="og:url" content="http://cristianlara.me/ax/index.html"/><meta property="og:description" content="Adaptive Experimentation Platform"/><meta property="og:image" content="http://cristianlara.me/ax/img/ax.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="http://cristianlara.me/ax/img/ax.svg"/><link rel="shortcut icon" href="/ax/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script><script type="text/javascript" src="/ax/js/plotUtils.js"></script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/ax/js/mathjax.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS_SVG"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><script src="/ax/js/scrollSpy.js"></script><link rel="stylesheet" href="/ax/css/main.css"/><script src="/ax/js/codetabs.js"></script></head><body><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/ax/"><img class="logo" src="/ax/img/ax_lockup_white.svg" alt="Ax"/><h2 class="headerTitleWithLogo">Ax</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/ax/docs/why-ax.html" target="_self">Docs</a></li><li class=""><a href="/ax/tutorials/" target="_self">Tutorials</a></li><li class=""><a href="/ax/api/" target="_self">API</a></li><li class=""><a href="https://github.com/cristianlara/Ax" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span></span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Tutorials</h3><ul class=""><li class="navListItem"><a class="navItem" href="/ax/tutorials/">Overview</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">API Comparison</h3><ul class=""><li class="navListItem"><a class="navItem" href="/ax/tutorials/gpei_hartmann_service.html">[RECOMMENDED] Service API</a></li><li class="navListItem"><a class="navItem" href="/ax/tutorials/gpei_hartmann_loop.html">Loop API</a></li><li class="navListItem"><a class="navItem" href="/ax/tutorials/gpei_hartmann_developer.html">Developer API</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Deep Dives</h3><ul class=""><li class="navListItem"><a class="navItem" href="/ax/tutorials/visualizations.html">Visualizations</a></li><li class="navListItem"><a class="navItem" href="/ax/tutorials/generation_strategy.html">Generation Strategy</a></li><li class="navListItem"><a class="navItem" href="/ax/tutorials/scheduler.html">Scheduler</a></li><li class="navListItem"><a class="navItem" href="/ax/tutorials/modular_botax.html">Modular `BoTorchModel`</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Bayesian Optimization</h3><ul class=""><li class="navListItem"><a class="navItem" href="/ax/tutorials/tune_cnn_service.html">Hyperparameter Optimization for PyTorch</a></li><li class="navListItem"><a class="navItem" href="/ax/tutorials/submitit.html">Hyperparameter Optimization on SLURM via SubmitIt</a></li><li class="navListItem"><a class="navItem" href="/ax/tutorials/multi_task.html">Multi-Task Modeling</a></li><li class="navListItem"><a class="navItem" href="/ax/tutorials/multiobjective_optimization.html">Multi-Objective Optimization</a></li><li class="navListItem"><a class="navItem" href="/ax/tutorials/saasbo.html">High-Dimensional Bayesian Optimization with Sparse Axis-Aligned Subspaces (SAASBO)</a></li><li class="navListItem"><a class="navItem" href="/ax/tutorials/saasbo_nehvi.html">Fully Bayesian, High-Dimensional, Multi-Objective Optimization</a></li><li class="navListItem"><a class="navItem" href="/ax/tutorials/sebo.html">Sparsity Exploration Bayesian Optimization (SEBO)</a></li><li class="navListItem"><a class="navItem" href="/ax/tutorials/early_stopping/early_stopping.html">Trial-Level Early Stopping</a></li><li class="navListItem"><a class="navItem" href="/ax/tutorials/gss.html">Global Stopping (Experiment-Level Early Stopping)</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Field Experiments</h3><ul class=""><li class="navListItem"><a class="navItem" href="/ax/tutorials/factorial.html">Bandit Optimization</a></li><li class="navListItem"><a class="navItem" href="/ax/tutorials/human_in_the_loop/human_in_the_loop.html">Human-in-the-Loop Optimization</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Integrating External Strategies</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/ax/tutorials/external_generation_node.html">RandomForest with ExternalGenerationNode</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="tutorialBody">
+<script>
+const requirejs = Object();
+requirejs.config = function() { };
+
+const dependencyMap = {
+    'plotly': Plotly,
+}
+
+function require(deps, fxn) {
+    return fxn(...deps.map(dep => dependencyMap[dep]));
+};
+</script>
+<div class="notebook">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Using-external-methods-for-candidate-generation-in-Ax">Using external methods for candidate generation in Ax<a class="anchor-link" href="#Using-external-methods-for-candidate-generation-in-Ax">¶</a></h1><p>Out of the box, Ax offers many options for candidate generation, most of which utilize Bayesian optimization algorithms built using <a href="https://botorch.org/">BoTorch</a>. For users that want to leverage Ax for experiment orchestration (via <code>AxClient</code> or <code>Scheduler</code>) and other features (e.g., early stopping), while relying on other methods for candidate generation, we introduced <code>ExternalGenerationNode</code>.</p>
+<p>A <code>GenerationNode</code> is a building block of a <code>GenerationStrategy</code>. They can be combined together utilize different methods for generating candidates at different stages of an experiment. <code>ExternalGenerationNode</code> exposes a lightweight interface to allow the users to easily integrate their methods into Ax, and use them as standalone or with other <code>GenerationNode</code>s in a <code>GenerationStrategy</code>.</p>
+<p>In this tutorial, we will implement a simple generation node using <code>RandomForestRegressor</code> from sklearn, and combine it with Sobol (for initialization) to optimize the Hartmann6 problem.</p>
+<p>NOTE: This is for illustration purposes only. We do not recommend using this strategy as it typically does not perform well compared to Ax's default algorithms due to it's overly greedy behavior.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">ax.core.base_trial</span> <span class="kn">import</span> <span class="n">TrialStatus</span>
+<span class="kn">from</span> <span class="nn">ax.core.data</span> <span class="kn">import</span> <span class="n">Data</span>
+<span class="kn">from</span> <span class="nn">ax.core.experiment</span> <span class="kn">import</span> <span class="n">Experiment</span>
+<span class="kn">from</span> <span class="nn">ax.core.parameter</span> <span class="kn">import</span> <span class="n">RangeParameter</span>
+<span class="kn">from</span> <span class="nn">ax.core.types</span> <span class="kn">import</span> <span class="n">TParameterization</span>
+<span class="kn">from</span> <span class="nn">ax.modelbridge.external_generation_node</span> <span class="kn">import</span> <span class="n">ExternalGenerationNode</span>
+<span class="kn">from</span> <span class="nn">ax.modelbridge.generation_node</span> <span class="kn">import</span> <span class="n">GenerationNode</span>
+<span class="kn">from</span> <span class="nn">ax.modelbridge.generation_strategy</span> <span class="kn">import</span> <span class="n">GenerationStrategy</span>
+<span class="kn">from</span> <span class="nn">ax.modelbridge.model_spec</span> <span class="kn">import</span> <span class="n">ModelSpec</span>
+<span class="kn">from</span> <span class="nn">ax.modelbridge.registry</span> <span class="kn">import</span> <span class="n">Models</span>
+<span class="kn">from</span> <span class="nn">ax.modelbridge.transition_criterion</span> <span class="kn">import</span> <span class="n">MaxTrials</span>
+<span class="kn">from</span> <span class="nn">ax.plot.trace</span> <span class="kn">import</span> <span class="n">plot_objective_value_vs_trial_index</span>
+<span class="kn">from</span> <span class="nn">ax.service.ax_client</span> <span class="kn">import</span> <span class="n">AxClient</span><span class="p">,</span> <span class="n">ObjectiveProperties</span>
+<span class="kn">from</span> <span class="nn">ax.service.utils.report_utils</span> <span class="kn">import</span> <span class="n">exp_to_df</span>
+<span class="kn">from</span> <span class="nn">ax.utils.common.typeutils</span> <span class="kn">import</span> <span class="n">checked_cast</span>
+<span class="kn">from</span> <span class="nn">ax.utils.measurement.synthetic_functions</span> <span class="kn">import</span> <span class="n">hartmann6</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestRegressor</span>
+
+
+<span class="k">class</span> <span class="nc">RandomForestGenerationNode</span><span class="p">(</span><span class="n">ExternalGenerationNode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A generation node that uses the RandomForestRegressor</span>
+<span class="sd">    from sklearn to predict candidate performance and picks the</span>
+<span class="sd">    next point as the random sample that has the best prediction.</span>
+
+<span class="sd">    To leverage external methods for candidate generation, the user must</span>
+<span class="sd">    create a subclass that implements ``update_generator_state`` and</span>
+<span class="sd">    ``get_next_candidate`` methods. This can then be provided</span>
+<span class="sd">    as a node into a ``GenerationStrategy``, either as standalone or as</span>
+<span class="sd">    part of a larger generation strategy with other generation nodes,</span>
+<span class="sd">    e.g., with a Sobol node for initialization.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">regressor_options</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Initialize the generation node.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            regressor_options: Options to pass to the random forest regressor.</span>
+<span class="sd">            num_samples: Number of random samples from the search space</span>
+<span class="sd">                used during candidate generation. The sample with the best</span>
+<span class="sd">                prediction is recommended as the next candidate.</span>
+<span class="sd">        """</span>
+        <span class="n">t_init_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">node_name</span><span class="o">=</span><span class="s2">"RandomForest"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">num_samples</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regressor</span><span class="p">:</span> <span class="n">RandomForestRegressor</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span>
+            <span class="o">**</span><span class="n">regressor_options</span>
+        <span class="p">)</span>
+        <span class="c1"># We will set these later when updating the state.</span>
+        <span class="c1"># Alternatively, we could have required experiment as an input</span>
+        <span class="c1"># and extracted them here.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">RangeParameter</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minimize</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Recording time spent in initializing the generator. This is</span>
+        <span class="c1"># used to compute the time spent in candidate generation.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_time_since_gen</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span> <span class="o">-</span> <span class="n">t_init_start</span>
+
+    <span class="k">def</span> <span class="nf">update_generator_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="p">:</span> <span class="n">Experiment</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""A method used to update the state of the generator. This includes any</span>
+<span class="sd">        models, predictors or any other custom state used by the generation node.</span>
+<span class="sd">        This method will be called with the up-to-date experiment and data before</span>
+<span class="sd">        ``get_next_candidate`` is called to generate the next trial(s). Note</span>
+<span class="sd">        that ``get_next_candidate`` may be called multiple times (to generate</span>
+<span class="sd">        multiple candidates) after a call to  ``update_generator_state``.</span>
+
+<span class="sd">        For this example, we will train the regressor using the latest data from</span>
+<span class="sd">        the experiment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            experiment: The ``Experiment`` object representing the current state of the</span>
+<span class="sd">                experiment. The key properties includes ``trials``, ``search_space``,</span>
+<span class="sd">                and ``optimization_config``. The data is provided as a separate arg.</span>
+<span class="sd">            data: The data / metrics collected on the experiment so far.</span>
+<span class="sd">        """</span>
+        <span class="n">search_space</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">search_space</span>
+        <span class="n">parameter_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">search_space</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">metric_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">optimization_config</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">RangeParameter</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">search_space</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s2">"This example only supports RangeParameters in the search space."</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">search_space</span><span class="o">.</span><span class="n">parameter_constraints</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s2">"This example does not support parameter constraints."</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">metric_names</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s2">"This example only supports single-objective optimization."</span>
+            <span class="p">)</span>
+        <span class="c1"># Get the data for the completed trials.</span>
+        <span class="n">num_completed_trials</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">experiment</span><span class="o">.</span><span class="n">trials_by_status</span><span class="p">[</span><span class="n">TrialStatus</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">])</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">num_completed_trials</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameter_names</span><span class="p">)])</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">num_completed_trials</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">t_idx</span><span class="p">,</span> <span class="n">trial</span> <span class="ow">in</span> <span class="n">experiment</span><span class="o">.</span><span class="n">trials</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">trial</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">"COMPLETED"</span><span class="p">:</span>
+                <span class="n">trial_parameters</span> <span class="o">=</span> <span class="n">trial</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">parameters</span>
+                <span class="n">x</span><span class="p">[</span><span class="n">t_idx</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">trial_parameters</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parameter_names</span><span class="p">])</span>
+                <span class="n">trial_df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">"trial_index"</span><span class="p">]</span> <span class="o">==</span> <span class="n">t_idx</span><span class="p">]</span>
+                <span class="n">y</span><span class="p">[</span><span class="n">t_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">trial_df</span><span class="p">[</span><span class="n">trial_df</span><span class="p">[</span><span class="s2">"metric_name"</span><span class="p">]</span> <span class="o">==</span> <span class="n">metric_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span>
+                    <span class="s2">"mean"</span>
+                <span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="c1"># Train the regressor.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regressor</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="c1"># Update the attributes not set in __init__.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">search_space</span><span class="o">.</span><span class="n">parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minimize</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">optimization_config</span><span class="o">.</span><span class="n">objective</span><span class="o">.</span><span class="n">minimize</span>
+
+    <span class="k">def</span> <span class="nf">get_next_candidate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">pending_parameters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">TParameterization</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TParameterization</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Get the parameters for the next candidate configuration to evaluate.</span>
+
+<span class="sd">        We will draw ``self.num_samples`` random samples from the search space</span>
+<span class="sd">        and predict the objective value for each sample. We will then return</span>
+<span class="sd">        the sample with the best predicted value.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pending_parameters: A list of parameters of the candidates pending</span>
+<span class="sd">                evaluation. This is often used to avoid generating duplicate candidates.</span>
+<span class="sd">                We ignore this here for simplicity.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary mapping parameter names to parameter values for the next</span>
+<span class="sd">            candidate suggested by the method.</span>
+<span class="sd">        """</span>
+        <span class="n">bounds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">p</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">upper</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
+        <span class="n">unit_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">num_samples</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">bounds</span><span class="p">)])</span>
+        <span class="n">samples</span> <span class="o">=</span> <span class="n">bounds</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">bounds</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">bounds</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">unit_samples</span>
+        <span class="c1"># Predict the objective value for each sample.</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regressor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+        <span class="c1"># Find the best sample.</span>
+        <span class="n">best_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimize</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span>
+        <span class="n">best_sample</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="n">best_idx</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="c1"># Convert the sample to a parameterization.</span>
+        <span class="n">candidate</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">p_name</span><span class="p">:</span> <span class="n">best_sample</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">candidate</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Construct-the-GenerationStrategy">Construct the GenerationStrategy<a class="anchor-link" href="#Construct-the-GenerationStrategy">¶</a></h2><p>We will use Sobol for the first 5 trials and defer to random forest for the rest.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">generation_strategy</span> <span class="o">=</span> <span class="n">GenerationStrategy</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">"Sobol+RandomForest"</span><span class="p">,</span>
+    <span class="n">nodes</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">GenerationNode</span><span class="p">(</span>
+            <span class="n">node_name</span><span class="o">=</span><span class="s2">"Sobol"</span><span class="p">,</span>
+            <span class="n">model_specs</span><span class="o">=</span><span class="p">[</span><span class="n">ModelSpec</span><span class="p">(</span><span class="n">Models</span><span class="o">.</span><span class="n">SOBOL</span><span class="p">)],</span>
+            <span class="n">transition_criteria</span><span class="o">=</span><span class="p">[</span>
+                <span class="n">MaxTrials</span><span class="p">(</span>
+                    <span class="c1"># This specifies the maximum number of trials to generate from this node, </span>
+                    <span class="c1"># and the next node in the strategy.</span>
+                    <span class="n">threshold</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                    <span class="n">block_transition_if_unmet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">transition_to</span><span class="o">=</span><span class="s2">"RandomForest"</span>
+                <span class="p">)</span>
+            <span class="p">],</span>
+        <span class="p">),</span>
+        <span class="n">RandomForestGenerationNode</span><span class="p">(</span><span class="n">num_samples</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">regressor_options</span><span class="o">=</span><span class="p">{}),</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Run-a-simple-experiment-using-AxClient">Run a simple experiment using AxClient<a class="anchor-link" href="#Run-a-simple-experiment-using-AxClient">¶</a></h2><p>More details on how to use AxClient can be found in the <a href="https://ax.dev/tutorials/gpei_hartmann_service.html">tutorial</a>.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">ax_client</span> <span class="o">=</span> <span class="n">AxClient</span><span class="p">(</span><span class="n">generation_strategy</span><span class="o">=</span><span class="n">generation_strategy</span><span class="p">)</span>
+
+<span class="n">ax_client</span><span class="o">.</span><span class="n">create_experiment</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">"hartmann_test_experiment"</span><span class="p">,</span>
+    <span class="n">parameters</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">"name"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"x</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"range"</span><span class="p">,</span>
+            <span class="s2">"bounds"</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+            <span class="s2">"value_type"</span><span class="p">:</span> <span class="s2">"float"</span><span class="p">,</span>  <span class="c1"># Optional, defaults to inference from type of "bounds".</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="n">objectives</span><span class="o">=</span><span class="p">{</span><span class="s2">"hartmann6"</span><span class="p">:</span> <span class="n">ObjectiveProperties</span><span class="p">(</span><span class="n">minimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)},</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">parameterization</span><span class="p">:</span> <span class="n">TParameterization</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">parameterization</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"x</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"hartmann6"</span><span class="p">:</span> <span class="p">(</span><span class="n">checked_cast</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">hartmann6</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span> <span class="mf">0.0</span><span class="p">)}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Run-the-optimization-loop">Run the optimization loop<a class="anchor-link" href="#Run-the-optimization-loop">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">):</span>
+    <span class="n">parameterization</span><span class="p">,</span> <span class="n">trial_index</span> <span class="o">=</span> <span class="n">ax_client</span><span class="o">.</span><span class="n">get_next_trial</span><span class="p">()</span>
+    <span class="n">ax_client</span><span class="o">.</span><span class="n">complete_trial</span><span class="p">(</span>
+        <span class="n">trial_index</span><span class="o">=</span><span class="n">trial_index</span><span class="p">,</span> <span class="n">raw_data</span><span class="o">=</span><span class="n">evaluate</span><span class="p">(</span><span class="n">parameterization</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="View-the-trials-generated-during-optimization">View the trials generated during optimization<a class="anchor-link" href="#View-the-trials-generated-during-optimization">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">exp_df</span> <span class="o">=</span> <span class="n">exp_to_df</span><span class="p">(</span><span class="n">ax_client</span><span class="o">.</span><span class="n">experiment</span><span class="p">)</span>
+<span class="n">exp_df</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plot_objective_value_vs_trial_index</span><span class="p">(</span>
+    <span class="n">exp_df</span><span class="o">=</span><span class="n">exp_df</span><span class="p">,</span>
+    <span class="n">metric_colname</span><span class="o">=</span><span class="s2">"hartmann6"</span><span class="p">,</span>
+    <span class="n">minimize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"Hartmann6 Objective Value vs. Trial Index"</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div></div><div class="tutorialButtonWrapper buttonWrapper"><a class="tutorialButton button" download="" href="/ax/files/external_generation_node.ipynb" target="_blank"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="file-download" class="svg-inline--fa fa-file-download fa-w-12" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm76.45 211.36l-96.42 95.7c-6.65 6.61-17.39 6.61-24.04 0l-96.42-95.7C73.42 337.29 80.54 320 94.82 320H160v-80c0-8.84 7.16-16 16-16h32c8.84 0 16 7.16 16 16v80h65.18c14.28 0 21.4 17.29 11.27 27.36zM377 105L279.1 7c-4.5-4.5-10.6-7-17-7H256v128h128v-6.1c0-6.3-2.5-12.4-7-16.9z"></path></svg>Download Tutorial Jupyter Notebook</a></div><div class="tutorialButtonWrapper buttonWrapper"><a class="tutorialButton button" download="" href="/ax/files//external_generation_node.py" target="_blank"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="file-download" class="svg-inline--fa fa-file-download fa-w-12" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm76.45 211.36l-96.42 95.7c-6.65 6.61-17.39 6.61-24.04 0l-96.42-95.7C73.42 337.29 80.54 320 94.82 320H160v-80c0-8.84 7.16-16 16-16h32c8.84 0 16 7.16 16 16v80h65.18c14.28 0 21.4 17.29 11.27 27.36zM377 105L279.1 7c-4.5-4.5-10.6-7-17-7H256v128h128v-6.1c0-6.3-2.5-12.4-7-16.9z"></path></svg>Download Tutorial Source Code</a></div></div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div class="footerSection"><h5>Legal</h5><a href="https://opensource.facebook.com/legal/privacy/" target="_blank" rel="noreferrer noopener">Privacy</a><a href="https://opensource.facebook.com/legal/terms/" target="_blank" rel="noreferrer noopener">Terms</a></div></section><a href="https://code.facebook.com/projects/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/ax/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2024 Meta Platforms, Inc.</section></footer></div></body></html>
