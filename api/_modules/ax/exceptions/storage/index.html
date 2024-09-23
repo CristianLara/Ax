@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ax.exceptions.storage &#8212; Ax 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=c058f7c8" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../_static/documentation_options.js?v=3ff7b324"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ax.exceptions.storage</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># Copyright (c) Meta Platforms, Inc. and affiliates.</span>
+<span class="c1">#</span>
+<span class="c1"># This source code is licensed under the MIT license found in the</span>
+<span class="c1"># LICENSE file in the root directory of this source tree.</span>
+
+<span class="c1"># pyre-strict</span>
+
+
+<span class="kn">from</span> <span class="nn">ax.exceptions.core</span> <span class="kn">import</span> <span class="n">AxError</span>
+
+
+<span class="n">STORAGE_DOCS_SUFFIX</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;Please see our storage tutorial (https://ax.dev/docs/storage.html) &quot;</span>
+    <span class="s2">&quot;for more details (&#39;Customizing&#39; section will be &quot;</span>
+    <span class="s2">&quot;relevant for saving Ax object subclasses).&quot;</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="JSONDecodeError">
+<a class="viewcode-back" href="../../../../exceptions/#ax.exceptions.storage.JSONDecodeError">[docs]</a>
+<span class="k">class</span> <span class="nc">JSONDecodeError</span><span class="p">(</span><span class="n">AxError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when an error occurs during JSON decoding.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="JSONEncodeError">
+<a class="viewcode-back" href="../../../../exceptions/#ax.exceptions.storage.JSONEncodeError">[docs]</a>
+<span class="k">class</span> <span class="nc">JSONEncodeError</span><span class="p">(</span><span class="n">AxError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when an error occurs during JSON encoding.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="SQADecodeError">
+<a class="viewcode-back" href="../../../../exceptions/#ax.exceptions.storage.SQADecodeError">[docs]</a>
+<span class="k">class</span> <span class="nc">SQADecodeError</span><span class="p">(</span><span class="n">AxError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when an error occurs during SQA decoding.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="SQAEncodeError">
+<a class="viewcode-back" href="../../../../exceptions/#ax.exceptions.storage.SQAEncodeError">[docs]</a>
+<span class="k">class</span> <span class="nc">SQAEncodeError</span><span class="p">(</span><span class="n">AxError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when an error occurs during SQA encoding.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="ImmutabilityError">
+<a class="viewcode-back" href="../../../../exceptions/#ax.exceptions.storage.ImmutabilityError">[docs]</a>
+<span class="k">class</span> <span class="nc">ImmutabilityError</span><span class="p">(</span><span class="n">AxError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when an attempt is made to update an immutable object.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="IncorrectDBConfigurationError">
+<a class="viewcode-back" href="../../../../exceptions/#ax.exceptions.storage.IncorrectDBConfigurationError">[docs]</a>
+<span class="k">class</span> <span class="nc">IncorrectDBConfigurationError</span><span class="p">(</span><span class="n">AxError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when an attempt is made to save and load an object, but</span>
+<span class="sd">    the current engine and session factory is setup up incorrectly to</span>
+<span class="sd">    process the call (e.g. current session factory will connect to a</span>
+<span class="sd">    wrong database for the call).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../">Ax</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ax/">ax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../benchmark/">ax.benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core/">ax.core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../exceptions/">ax.exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../metrics/">ax.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modelbridge/">ax.modelbridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../models/">ax.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plot/">ax.plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../runners/">ax.runners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../service/">ax.service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage/">ax.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../telemetry/">ax.telemetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../utils/">ax.utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../">Documentation overview</a><ul>
+  <li><a href="../../../">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

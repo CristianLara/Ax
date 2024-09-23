@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ax.exceptions.generation_strategy &#8212; Ax 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=c058f7c8" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../_static/documentation_options.js?v=3ff7b324"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ax.exceptions.generation_strategy</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># Copyright (c) Meta Platforms, Inc. and affiliates.</span>
+<span class="c1">#</span>
+<span class="c1"># This source code is licensed under the MIT license found in the</span>
+<span class="c1"># LICENSE file in the root directory of this source tree.</span>
+
+<span class="c1"># pyre-strict</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">ax.exceptions.core</span> <span class="kn">import</span> <span class="n">AxError</span><span class="p">,</span> <span class="n">OptimizationComplete</span>
+
+
+<div class="viewcode-block" id="AxGenerationException">
+<a class="viewcode-back" href="../../../../exceptions/#ax.exceptions.generation_strategy.AxGenerationException">[docs]</a>
+<span class="k">class</span> <span class="nc">AxGenerationException</span><span class="p">(</span><span class="n">AxError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when there is an issue with the generation strategy.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="MaxParallelismReachedException">
+<a class="viewcode-back" href="../../../../exceptions/#ax.exceptions.generation_strategy.MaxParallelismReachedException">[docs]</a>
+<span class="k">class</span> <span class="nc">MaxParallelismReachedException</span><span class="p">(</span><span class="n">AxGenerationException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Special exception indicating that maximum number of trials running in</span>
+<span class="sd">    parallel set on a given step (as `GenerationStep.max_parallelism`) has been</span>
+<span class="sd">    reached. Upon getting this exception, users should wait until more trials</span>
+<span class="sd">    are completed with data, to generate new trials.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">num_running</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">step_index</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">node_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">node_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">msg_start</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Maximum parallelism for generation node #</span><span class="si">{</span><span class="n">node_name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg_start</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Maximum parallelism for generation step #</span><span class="si">{</span><span class="n">step_index</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">msg_start</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; has been reached: </span><span class="si">{</span><span class="n">num_running</span><span class="si">}</span><span class="s2"> trials are currently &#39;running&#39;. Some &quot;</span>
+            <span class="s2">&quot;trials need to be completed before more trials can be generated. See &quot;</span>
+            <span class="s2">&quot;https://ax.dev/docs/bayesopt.html to understand why limited parallelism &quot;</span>
+            <span class="s2">&quot;improves performance of Bayesian optimization.&quot;</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="GenerationStrategyCompleted">
+<a class="viewcode-back" href="../../../../exceptions/#ax.exceptions.generation_strategy.GenerationStrategyCompleted">[docs]</a>
+<span class="k">class</span> <span class="nc">GenerationStrategyCompleted</span><span class="p">(</span><span class="n">OptimizationComplete</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Special exception indicating that the generation strategy has been</span>
+<span class="sd">    completed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="GenerationStrategyRepeatedPoints">
+<a class="viewcode-back" href="../../../../exceptions/#ax.exceptions.generation_strategy.GenerationStrategyRepeatedPoints">[docs]</a>
+<span class="k">class</span> <span class="nc">GenerationStrategyRepeatedPoints</span><span class="p">(</span><span class="n">GenerationStrategyCompleted</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Special exception indicating that the generation strategy is repeatedly</span>
+<span class="sd">    suggesting previously sampled points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="GenerationStrategyMisconfiguredException">
+<a class="viewcode-back" href="../../../../exceptions/#ax.exceptions.generation_strategy.GenerationStrategyMisconfiguredException">[docs]</a>
+<span class="k">class</span> <span class="nc">GenerationStrategyMisconfiguredException</span><span class="p">(</span><span class="n">AxGenerationException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Special exception indicating that the generation strategy is misconfigured.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error_info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="s2">&quot;This GenerationStrategy was unable to be initialized properly. Please &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;check the documentation, and adjust the configuration accordingly. &quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">error_info</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="OptimizationConfigRequired">
+<a class="viewcode-back" href="../../../../exceptions/#ax.exceptions.generation_strategy.OptimizationConfigRequired">[docs]</a>
+<span class="k">class</span> <span class="nc">OptimizationConfigRequired</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Error indicating that candidate generation cannot be completed</span>
+<span class="sd">    because an optimization config was not provided.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../">Ax</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ax/">ax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../benchmark/">ax.benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core/">ax.core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../exceptions/">ax.exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../metrics/">ax.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modelbridge/">ax.modelbridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../models/">ax.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plot/">ax.plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../runners/">ax.runners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../service/">ax.service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage/">ax.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../telemetry/">ax.telemetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../utils/">ax.utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../">Documentation overview</a><ul>
+  <li><a href="../../../">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

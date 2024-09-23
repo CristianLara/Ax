@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>API Reference &#8212; Ax 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=c058f7c8" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=3ff7b324"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex/" />
+    <link rel="search" title="Search" href="search/" />
+    <link rel="next" title="ax" href="ax/" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ax/">ax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmark/">ax.benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="benchmark/#benchmark">Benchmark</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="core/">ax.core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core/#core-classes">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/#module-ax.core.types">Core Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/#module-ax.core.utils">Core Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/#module-ax.core.formatting_utils">Formatting Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="exceptions/">ax.exceptions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="exceptions/#module-ax.exceptions.constants">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions/#module-ax.exceptions.core">Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions/#module-ax.exceptions.data_provider">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions/#module-ax.exceptions.generation_strategy">Generation Strategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions/#module-ax.exceptions.model">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions/#module-ax.exceptions.storage">Storage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="metrics/">ax.metrics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="metrics/#branin">Branin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics/#branin-map">Branin Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics/#chemistry">Chemistry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics/#curve">Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics/#factorial">Factorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics/#hartmann6">Hartmann6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics/#l2-norm">L2 Norm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics/#noisy-functions">Noisy Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics/#noisy-function-map">Noisy Function Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics/#sklearn">Sklearn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics/#tensorboard">Tensorboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics/#torchx">TorchX</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modelbridge/">ax.modelbridge</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modelbridge/#generation-strategy-registry-and-factory">Generation Strategy, Registry, and Factory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modelbridge/#model-bridges">Model Bridges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modelbridge/#utilities">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modelbridge/#transforms">Transforms</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="models/">ax.models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="models/#base-models-utilities">Base Models &amp; Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/#discrete-models">Discrete Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/#random-models">Random Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/#torch-models-utilities">Torch Models &amp; Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plot/">ax.plot</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plot/#rendering">Rendering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot/#plots">Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot/#plotting-utilities">Plotting Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="runners/">ax.runners</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="runners/#botorch-test-problem">BoTorch Test Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runners/#singlerunningtrialmixin">SingleRunningTrialMixin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runners/#synthetic-runner">Synthetic Runner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runners/#simulated-backend-runner">Simulated Backend Runner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runners/#torchx-runner">TorchX Runner</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="service/">ax.service</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="service/#ax-client">Ax Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service/#managed-loop">Managed Loop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service/#interactive-loop">Interactive Loop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service/#scheduler">Scheduler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service/#best-point-identification">Best Point Identification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service/#instantiation">Instantiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service/#reporting">Reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service/#withdbsettingsbase">WithDBSettingsBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service/#earlystopping">EarlyStopping</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="storage/">ax.storage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="storage/#json">JSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storage/#sqlalchemy-mysql-sqlite">SQLAlchemy (MySQL / SQLite)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storage/#registries">Registries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storage/#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="telemetry/">ax.telemetry</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="telemetry/#experiment">Experiment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry/#generation-strategy">Generation Strategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry/#scheduler">Scheduler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils/">ax.utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utils/#common">Common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/#flake8-plugins">Flake8 Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/#measurement">Measurement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/#notebook">Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/#report">Report</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/#sensitivity">Sensitivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/#stats">Stats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/#test-metrics">Test Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/#tutorials">Tutorials</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex/"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex/"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search/"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Ax</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ax/">ax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmark/">ax.benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core/">ax.core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exceptions/">ax.exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metrics/">ax.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelbridge/">ax.modelbridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models/">ax.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot/">ax.plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runners/">ax.runners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="service/">ax.service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage/">ax.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="telemetry/">ax.telemetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils/">ax.utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="ax/" title="next chapter">ax</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+      
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

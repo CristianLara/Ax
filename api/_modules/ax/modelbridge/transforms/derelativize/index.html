@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ax.modelbridge.transforms.derelativize &#8212; Ax 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/basic.css?v=c058f7c8" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../../_static/documentation_options.js?v=3ff7b324"></script>
+    <script src="../../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../../search/" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ax.modelbridge.transforms.derelativize</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># Copyright (c) Meta Platforms, Inc. and affiliates.</span>
+<span class="c1">#</span>
+<span class="c1"># This source code is licensed under the MIT license found in the</span>
+<span class="c1"># LICENSE file in the root directory of this source tree.</span>
+
+<span class="c1"># pyre-strict</span>
+
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">Logger</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">ax.core.observation</span> <span class="kn">import</span> <span class="n">ObservationFeatures</span>
+<span class="kn">from</span> <span class="nn">ax.core.optimization_config</span> <span class="kn">import</span> <span class="n">OptimizationConfig</span>
+<span class="kn">from</span> <span class="nn">ax.core.outcome_constraint</span> <span class="kn">import</span> <span class="n">OutcomeConstraint</span><span class="p">,</span> <span class="n">ScalarizedOutcomeConstraint</span>
+<span class="kn">from</span> <span class="nn">ax.exceptions.core</span> <span class="kn">import</span> <span class="n">DataRequiredError</span>
+<span class="kn">from</span> <span class="nn">ax.modelbridge.base</span> <span class="kn">import</span> <span class="n">unwrap_observation_data</span>
+<span class="kn">from</span> <span class="nn">ax.modelbridge.transforms.base</span> <span class="kn">import</span> <span class="n">Transform</span>
+<span class="kn">from</span> <span class="nn">ax.modelbridge.transforms.ivw</span> <span class="kn">import</span> <span class="n">ivw_metric_merge</span>
+<span class="kn">from</span> <span class="nn">ax.utils.common.logger</span> <span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span> <span class="nn">ax.utils.common.typeutils</span> <span class="kn">import</span> <span class="n">not_none</span>
+
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="c1"># import as module to make sphinx-autodoc-typehints happy</span>
+    <span class="kn">from</span> <span class="nn">ax</span> <span class="kn">import</span> <span class="n">modelbridge</span> <span class="k">as</span> <span class="n">modelbridge_module</span>  <span class="c1"># noqa F401</span>
+
+
+<span class="n">logger</span><span class="p">:</span> <span class="n">Logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Derelativize">
+<a class="viewcode-back" href="../../../../../modelbridge/#ax.modelbridge.transforms.derelativize.Derelativize">[docs]</a>
+<span class="k">class</span> <span class="nc">Derelativize</span><span class="p">(</span><span class="n">Transform</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Changes relative constraints to not-relative constraints using a plug-in</span>
+<span class="sd">    estimate of the status quo value.</span>
+
+<span class="sd">    If status quo is in-design, uses model estimate at status quo. If not, uses</span>
+<span class="sd">    raw observation at status quo.</span>
+
+<span class="sd">    Will raise an error if status quo is in-design and model fails to predict</span>
+<span class="sd">    for it, unless the flag &quot;use_raw_status_quo&quot; is set to True in the</span>
+<span class="sd">    transform config, in which case it will fall back to using the observed</span>
+<span class="sd">    value in the training data.</span>
+
+<span class="sd">    Transform is done in-place.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Derelativize.transform_optimization_config">
+<a class="viewcode-back" href="../../../../../modelbridge/#ax.modelbridge.transforms.derelativize.Derelativize.transform_optimization_config">[docs]</a>
+    <span class="k">def</span> <span class="nf">transform_optimization_config</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">optimization_config</span><span class="p">:</span> <span class="n">OptimizationConfig</span><span class="p">,</span>
+        <span class="n">modelbridge</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;modelbridge_module.base.ModelBridge&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">fixed_features</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ObservationFeatures</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OptimizationConfig</span><span class="p">:</span>
+        <span class="n">use_raw_sq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;use_raw_status_quo&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">has_relative_constraint</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">relative</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">optimization_config</span><span class="o">.</span><span class="n">all_constraints</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">has_relative_constraint</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">optimization_config</span>
+        <span class="c1"># Else, we have at least one relative constraint.</span>
+        <span class="c1"># Estimate the value at the status quo.</span>
+        <span class="k">if</span> <span class="n">modelbridge</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;ModelBridge not supplied to transform.&quot;</span><span class="p">)</span>
+        <span class="c1"># Unobserved status quo corresponds to a modelbridge.status_quo of None.</span>
+        <span class="k">if</span> <span class="n">modelbridge</span><span class="o">.</span><span class="n">status_quo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DataRequiredError</span><span class="p">(</span>
+                <span class="s2">&quot;Optimization config has relative constraint, but model was &quot;</span>
+                <span class="s2">&quot;not fit with status quo.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">sq</span> <span class="o">=</span> <span class="n">not_none</span><span class="p">(</span><span class="n">modelbridge</span><span class="o">.</span><span class="n">status_quo</span><span class="p">)</span>
+        <span class="c1"># Only use model predictions if the status quo is in the search space (including</span>
+        <span class="c1"># parameter constraints) and `use_raw_sq` is false.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">use_raw_sq</span> <span class="ow">and</span> <span class="n">modelbridge</span><span class="o">.</span><span class="n">model_space</span><span class="o">.</span><span class="n">check_membership</span><span class="p">(</span>
+            <span class="n">sq</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">parameters</span>
+        <span class="p">):</span>
+            <span class="n">f</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">modelbridge</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="n">sq</span><span class="o">.</span><span class="n">features</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sq_data</span> <span class="o">=</span> <span class="n">ivw_metric_merge</span><span class="p">(</span><span class="n">obsd</span><span class="o">=</span><span class="n">sq</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">conflicting_noiseless</span><span class="o">=</span><span class="s2">&quot;raise&quot;</span><span class="p">)</span>
+            <span class="n">f</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">unwrap_observation_data</span><span class="p">([</span><span class="n">sq_data</span><span class="p">])</span>
+
+        <span class="c1"># Plug in the status quo value to each relative constraint.</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">optimization_config</span><span class="o">.</span><span class="n">all_constraints</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">relative</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">ScalarizedOutcomeConstraint</span><span class="p">):</span>
+                    <span class="n">missing_metrics</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="n">metric</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">metrics</span> <span class="k">if</span> <span class="n">metric</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">f</span>
+                    <span class="p">}</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">missing_metrics</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">DataRequiredError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Status-quo metric value not yet available for metric(s) &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">missing_metrics</span><span class="si">}</span><span class="s2">.&quot;</span>
+                        <span class="p">)</span>
+                    <span class="c1"># The sq_val of scalarized outcome is the weighted</span>
+                    <span class="c1"># sum of its component metrics</span>
+                    <span class="n">sq_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+                        <span class="p">[</span>
+                            <span class="n">c</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">metric</span><span class="o">.</span><span class="n">name</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">metric</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">metrics</span><span class="p">)</span>
+                        <span class="p">]</span>
+                    <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">c</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">sq_val</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">name</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">DataRequiredError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Status-quo metric value not yet available for metric &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">c</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.&quot;</span>
+                    <span class="p">)</span>
+                <span class="n">c</span><span class="o">.</span><span class="n">bound</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">c</span><span class="o">.</span><span class="n">bound</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">sq_val</span>
+                <span class="n">c</span><span class="o">.</span><span class="n">relative</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">optimization_config</span></div>
+
+
+<div class="viewcode-block" id="Derelativize.untransform_outcome_constraints">
+<a class="viewcode-back" href="../../../../../modelbridge/#ax.modelbridge.transforms.derelativize.Derelativize.untransform_outcome_constraints">[docs]</a>
+    <span class="k">def</span> <span class="nf">untransform_outcome_constraints</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">outcome_constraints</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">OutcomeConstraint</span><span class="p">],</span>
+        <span class="n">fixed_features</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ObservationFeatures</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">OutcomeConstraint</span><span class="p">]:</span>
+        <span class="c1"># We intentionally leave outcome constraints derelativized when</span>
+        <span class="c1"># untransforming.</span>
+        <span class="k">return</span> <span class="n">outcome_constraints</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../">Ax</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../ax/">ax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../benchmark/">ax.benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../core/">ax.core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../exceptions/">ax.exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../metrics/">ax.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../modelbridge/">ax.modelbridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../models/">ax.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../plot/">ax.plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../runners/">ax.runners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../service/">ax.service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../storage/">ax.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../telemetry/">ax.telemetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../utils/">ax.utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../">Documentation overview</a><ul>
+  <li><a href="../../../../">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

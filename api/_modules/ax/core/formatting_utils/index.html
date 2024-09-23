@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ax.core.formatting_utils &#8212; Ax 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=c058f7c8" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../_static/documentation_options.js?v=3ff7b324"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ax.core.formatting_utils</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># Copyright (c) Meta Platforms, Inc. and affiliates.</span>
+<span class="c1">#</span>
+<span class="c1"># This source code is licensed under the MIT license found in the</span>
+<span class="c1"># LICENSE file in the root directory of this source tree.</span>
+
+<span class="c1"># pyre-strict</span>
+
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">cast</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">ax.core.data</span> <span class="kn">import</span> <span class="n">Data</span>
+<span class="kn">from</span> <span class="nn">ax.core.map_data</span> <span class="kn">import</span> <span class="n">MapData</span>
+<span class="kn">from</span> <span class="nn">ax.core.types</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TEvaluationOutcome</span><span class="p">,</span>
+    <span class="n">TMapTrialEvaluation</span><span class="p">,</span>
+    <span class="n">TTrialEvaluation</span><span class="p">,</span>
+    <span class="n">validate_evaluation_outcome</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">ax.exceptions.core</span> <span class="kn">import</span> <span class="n">UserInputError</span>
+<span class="kn">from</span> <span class="nn">ax.utils.common.typeutils_nonnative</span> <span class="kn">import</span> <span class="n">numpy_type_to_python_type</span>
+
+
+<span class="c1"># -------------------- Data formatting utils. ---------------------</span>
+
+
+<div class="viewcode-block" id="DataType">
+<a class="viewcode-back" href="../../../../core/#ax.core.formatting_utils.DataType">[docs]</a>
+<span class="k">class</span> <span class="nc">DataType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">DATA</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">MAP_DATA</span> <span class="o">=</span> <span class="mi">3</span></div>
+
+
+
+<span class="n">DATA_TYPE_LOOKUP</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">DataType</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">Data</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">DataType</span><span class="o">.</span><span class="n">DATA</span><span class="p">:</span> <span class="n">Data</span><span class="p">,</span>
+    <span class="n">DataType</span><span class="o">.</span><span class="n">MAP_DATA</span><span class="p">:</span> <span class="n">MapData</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="raw_data_to_evaluation">
+<a class="viewcode-back" href="../../../../core/#ax.core.formatting_utils.raw_data_to_evaluation">[docs]</a>
+<span class="k">def</span> <span class="nf">raw_data_to_evaluation</span><span class="p">(</span>
+    <span class="n">raw_data</span><span class="p">:</span> <span class="n">TEvaluationOutcome</span><span class="p">,</span>
+    <span class="n">metric_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TEvaluationOutcome</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Format the trial evaluation data to a standard `TTrialEvaluation`</span>
+<span class="sd">    (mapping from metric names to a tuple of mean and SEM) representation, or</span>
+<span class="sd">    to a TMapTrialEvaluation.</span>
+
+<span class="sd">    Note: this function expects raw_data to be data for a `Trial`, not a</span>
+<span class="sd">    `BatchedTrial`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="k">raise</span> <span class="n">UserInputError</span><span class="p">(</span><span class="s2">&quot;Raw data is expected to be just for one arm.&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">dat</span> <span class="ow">in</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+                    <span class="k">raise</span> <span class="n">UserInputError</span><span class="p">(</span>
+                        <span class="s2">&quot;Raw data for an arm is expected to either be a tuple of &quot;</span>
+                        <span class="s2">&quot;numerical mean and SEM or just a numerical mean. &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Got: </span><span class="si">{</span><span class="n">dat</span><span class="si">}</span><span class="s2"> for metric &#39;</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+                    <span class="p">)</span>
+                <span class="n">raw_data</span><span class="p">[</span><span class="n">metric_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">dat</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">raw_data</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">validate_evaluation_outcome</span><span class="p">(</span><span class="n">outcome</span><span class="o">=</span><span class="n">raw_data</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">UserInputError</span><span class="p">(</span>
+            <span class="s2">&quot;Raw data does not conform to the expected structure. For simple &quot;</span>
+            <span class="s2">&quot;evaluations of one or more metrics, `raw_data` is expected to be &quot;</span>
+            <span class="s2">&quot;a dictionary of the form `{metric_name -&gt; mean}` or `{metric_name &quot;</span>
+            <span class="s2">&quot;-&gt; (mean, SEM)}`. For fidelity or mapping (e.g., early stopping) &quot;</span>
+            <span class="s2">&quot;evaluation, the expected format is `[(fidelities, {metric_name -&gt; &quot;</span>
+            <span class="s2">&quot;(mean, SEM)})]` or `[({mapping_key, mapping_value}, {metric_name -&gt; &quot;</span>
+            <span class="s2">&quot;(mean, SEM)})]`.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Received </span><span class="si">{</span><span class="n">raw_data</span><span class="si">=}</span><span class="s2">. Original validation error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">validate_evaluation_outcome</span><span class="p">(</span><span class="n">raw_data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">raw_data</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">metric_names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">UserInputError</span><span class="p">(</span>
+            <span class="s2">&quot;Raw data must be a dictionary of metric names to mean &quot;</span>
+            <span class="s2">&quot;for experiments with multiple metrics attached. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Got </span><span class="si">{</span><span class="n">raw_data</span><span class="si">=}</span><span class="s2"> for </span><span class="si">{</span><span class="n">metric_names</span><span class="si">=}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_data</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">metric_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">raw_data</span><span class="p">}</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_data</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">metric_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="p">(</span><span class="n">raw_data</span><span class="p">,</span> <span class="kc">None</span><span class="p">)}</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_data</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">metric_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="p">(</span><span class="n">numpy_type_to_python_type</span><span class="p">(</span><span class="n">raw_data</span><span class="p">),</span> <span class="kc">None</span><span class="p">)}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">UserInputError</span><span class="p">(</span>
+            <span class="s2">&quot;Raw data has an invalid type. The data must either be in the form &quot;</span>
+            <span class="s2">&quot;of a dictionary of metric names to mean, sem tuples, &quot;</span>
+            <span class="s2">&quot;or a single mean, sem tuple, or a single mean.&quot;</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="data_and_evaluations_from_raw_data">
+<a class="viewcode-back" href="../../../../core/#ax.core.formatting_utils.data_and_evaluations_from_raw_data">[docs]</a>
+<span class="k">def</span> <span class="nf">data_and_evaluations_from_raw_data</span><span class="p">(</span>
+    <span class="n">raw_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">TEvaluationOutcome</span><span class="p">],</span>
+    <span class="n">metric_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">trial_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">sample_sizes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="n">data_type</span><span class="p">:</span> <span class="n">DataType</span><span class="p">,</span>
+    <span class="n">start_time</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">end_time</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">TEvaluationOutcome</span><span class="p">],</span> <span class="n">Data</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transforms evaluations into Ax Data.</span>
+
+<span class="sd">    Each evaluation is either a trial evaluation: {metric_name -&gt; (mean, SEM)}</span>
+<span class="sd">    or a fidelity trial evaluation for multi-fidelity optimizations:</span>
+<span class="sd">    [(fidelities, {metric_name -&gt; (mean, SEM)})].</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        raw_data: Mapping from arm name to raw_data.</span>
+<span class="sd">        metric_names: Names of metrics used to transform raw data to evaluations.</span>
+<span class="sd">        trial_index: Index of the trial, for which the evaluations are.</span>
+<span class="sd">        sample_sizes: Number of samples collected for each arm, may be empty</span>
+<span class="sd">            if unavailable.</span>
+<span class="sd">        start_time: Optional start time of run of the trial that produced this</span>
+<span class="sd">            data, in milliseconds or iso format.  Milliseconds will eventually be</span>
+<span class="sd">            converted to iso format because iso format automatically works with the</span>
+<span class="sd">            pandas column type `Timestamp`.</span>
+<span class="sd">        end_time: Optional end time of run of the trial that produced this</span>
+<span class="sd">            data, in milliseconds or iso format.  Milliseconds will eventually be</span>
+<span class="sd">            converted to iso format because iso format automatically works with the</span>
+<span class="sd">            pandas column type `Timestamp`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">evaluations</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">arm_name</span><span class="p">:</span> <span class="n">raw_data_to_evaluation</span><span class="p">(</span>
+            <span class="n">raw_data</span><span class="o">=</span><span class="n">raw_data</span><span class="p">[</span><span class="n">arm_name</span><span class="p">],</span>
+            <span class="n">metric_names</span><span class="o">=</span><span class="n">metric_names</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">arm_name</span> <span class="ow">in</span> <span class="n">raw_data</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">evaluations</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">evaluations</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="n">data_type</span> <span class="ow">is</span> <span class="n">DataType</span><span class="o">.</span><span class="n">MAP_DATA</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UserInputError</span><span class="p">(</span>
+                <span class="s2">&quot;The format of the `raw_data` is not compatible with `MapData`. &quot;</span>
+                <span class="s2">&quot;Possible cause: Did you set default data type to `MapData`, e.g., &quot;</span>
+                <span class="s2">&quot;for early stopping, but forgot to provide the `raw_data` &quot;</span>
+                <span class="s2">&quot;in the form of `[(fidelities, {metric_name -&gt; (mean, SEM)})]` or &quot;</span>
+                <span class="s2">&quot;`[({mapping_key, mapping_value}, {metric_name -&gt; (mean, SEM)})]`? &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Received: </span><span class="si">{</span><span class="n">raw_data</span><span class="si">=}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="c1"># All evaluations are no-fidelity evaluations.</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="o">.</span><span class="n">from_evaluations</span><span class="p">(</span>
+            <span class="n">evaluations</span><span class="o">=</span><span class="n">cast</span><span class="p">(</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">TTrialEvaluation</span><span class="p">],</span> <span class="n">evaluations</span><span class="p">),</span>
+            <span class="n">trial_index</span><span class="o">=</span><span class="n">trial_index</span><span class="p">,</span>
+            <span class="n">sample_sizes</span><span class="o">=</span><span class="n">sample_sizes</span><span class="p">,</span>
+            <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
+            <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">evaluations</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">evaluations</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="n">data_type</span> <span class="ow">is</span> <span class="n">DataType</span><span class="o">.</span><span class="n">DATA</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UserInputError</span><span class="p">(</span>
+                <span class="s2">&quot;The format of the `raw_data` is not compatible with `Data`. &quot;</span>
+                <span class="s2">&quot;Possible cause: Did you provide data for multi-fidelity evaluations, &quot;</span>
+                <span class="s2">&quot;e.g., for early stopping, but forgot to set the default data type &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;to `MapData`? Received: </span><span class="si">{</span><span class="n">raw_data</span><span class="si">=}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="c1"># All evaluations are map evaluations.</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">MapData</span><span class="o">.</span><span class="n">from_map_evaluations</span><span class="p">(</span>
+            <span class="n">evaluations</span><span class="o">=</span><span class="n">cast</span><span class="p">(</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">TMapTrialEvaluation</span><span class="p">],</span> <span class="n">evaluations</span><span class="p">),</span>
+            <span class="n">trial_index</span><span class="o">=</span><span class="n">trial_index</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Evaluations included a mixture of no-fidelity and with-fidelity &quot;</span>
+            <span class="s2">&quot;evaluations, which is not currently supported.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">evaluations</span><span class="p">,</span> <span class="n">data</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../">Ax</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ax/">ax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../benchmark/">ax.benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core/">ax.core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../exceptions/">ax.exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../metrics/">ax.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modelbridge/">ax.modelbridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../models/">ax.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plot/">ax.plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../runners/">ax.runners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../service/">ax.service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage/">ax.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../telemetry/">ax.telemetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../utils/">ax.utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../">Documentation overview</a><ul>
+  <li><a href="../../../">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

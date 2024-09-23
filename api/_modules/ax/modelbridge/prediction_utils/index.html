@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ax.modelbridge.prediction_utils &#8212; Ax 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=c058f7c8" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../_static/documentation_options.js?v=3ff7b324"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ax.modelbridge.prediction_utils</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># Copyright (c) Meta Platforms, Inc. and affiliates.</span>
+<span class="c1">#</span>
+<span class="c1"># This source code is licensed under the MIT license found in the</span>
+<span class="c1"># LICENSE file in the root directory of this source tree.</span>
+
+<span class="c1"># pyre-strict</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">ax.core.observation</span> <span class="kn">import</span> <span class="n">ObservationFeatures</span>
+<span class="kn">from</span> <span class="nn">ax.modelbridge</span> <span class="kn">import</span> <span class="n">ModelBridge</span>
+
+
+<div class="viewcode-block" id="predict_at_point">
+<a class="viewcode-back" href="../../../../modelbridge/#ax.modelbridge.prediction_utils.predict_at_point">[docs]</a>
+<span class="k">def</span> <span class="nf">predict_at_point</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">ModelBridge</span><span class="p">,</span>
+    <span class="n">obsf</span><span class="p">:</span> <span class="n">ObservationFeatures</span><span class="p">,</span>
+    <span class="n">metric_names</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">scalarized_metric_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Make a prediction at a point.</span>
+
+<span class="sd">    Returns mean and standard deviation in format expected by plotting.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model: ModelBridge</span>
+<span class="sd">        obsf: ObservationFeatures for which to predict</span>
+<span class="sd">        metric_names: Limit predictions to these metrics.</span>
+<span class="sd">        scalarized_metric_config: An optional list of dicts specifying how to aggregate</span>
+<span class="sd">            multiple metrics into a single scalarized metric. For each dict, the key is</span>
+<span class="sd">            the name of the new scalarized metric, and the value is a dictionary mapping</span>
+<span class="sd">            each metric to its weight. e.g.</span>
+<span class="sd">            {&quot;name&quot;: &quot;metric1:agg&quot;, &quot;weight&quot;: {&quot;metric1_c1&quot;: 0.5, &quot;metric1_c2&quot;: 0.5}}.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A tuple containing</span>
+
+<span class="sd">        - Map from metric name to prediction.</span>
+<span class="sd">        - Map from metric name to standard error.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">f_pred</span><span class="p">,</span> <span class="n">cov_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="n">obsf</span><span class="p">])</span>
+    <span class="n">mean_pred_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">metric_name</span><span class="p">:</span> <span class="n">pred</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">pred</span> <span class="ow">in</span> <span class="n">f_pred</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="n">cov_pred_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">metric_name1</span><span class="p">,</span> <span class="n">pred_dict</span> <span class="ow">in</span> <span class="n">cov_pred</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">cov_pred_dict</span><span class="p">[</span><span class="n">metric_name1</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">metric_name2</span><span class="p">,</span> <span class="n">pred</span> <span class="ow">in</span> <span class="n">pred_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">cov_pred_dict</span><span class="p">[</span><span class="n">metric_name1</span><span class="p">][</span><span class="n">metric_name2</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">y_hat</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">se_hat</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">metric_name</span> <span class="ow">in</span> <span class="n">f_pred</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">metric_name</span> <span class="ow">in</span> <span class="n">metric_names</span><span class="p">:</span>
+            <span class="n">y_hat</span><span class="p">[</span><span class="n">metric_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">mean_pred_dict</span><span class="p">[</span><span class="n">metric_name</span><span class="p">]</span>
+            <span class="n">se_hat</span><span class="p">[</span><span class="n">metric_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">cov_pred_dict</span><span class="p">[</span><span class="n">metric_name</span><span class="p">][</span><span class="n">metric_name</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">scalarized_metric_config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">agg_metric</span> <span class="ow">in</span> <span class="n">scalarized_metric_config</span><span class="p">:</span>
+            <span class="n">agg_metric_name</span> <span class="o">=</span> <span class="n">agg_metric</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">agg_metric_name</span> <span class="ow">in</span> <span class="n">metric_names</span><span class="p">:</span>
+                <span class="n">agg_metric_weight_dict</span> <span class="o">=</span> <span class="n">agg_metric</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span>
+                <span class="n">pred_mean</span><span class="p">,</span> <span class="n">pred_var</span> <span class="o">=</span> <span class="n">_compute_scalarized_outcome</span><span class="p">(</span>
+                    <span class="n">mean_dict</span><span class="o">=</span><span class="n">mean_pred_dict</span><span class="p">,</span>
+                    <span class="n">cov_dict</span><span class="o">=</span><span class="n">cov_pred_dict</span><span class="p">,</span>
+                    <span class="n">agg_metric_weight_dict</span><span class="o">=</span><span class="n">agg_metric_weight_dict</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">y_hat</span><span class="p">[</span><span class="n">agg_metric_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred_mean</span>
+                <span class="n">se_hat</span><span class="p">[</span><span class="n">agg_metric_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">pred_var</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">se_hat</span></div>
+
+
+
+<div class="viewcode-block" id="predict_by_features">
+<a class="viewcode-back" href="../../../../modelbridge/#ax.modelbridge.prediction_utils.predict_by_features">[docs]</a>
+<span class="k">def</span> <span class="nf">predict_by_features</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">ModelBridge</span><span class="p">,</span>
+    <span class="n">label_to_feature_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ObservationFeatures</span><span class="p">],</span>
+    <span class="n">metric_names</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Predict for given data points and model.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model: Model to be used for the prediction</span>
+<span class="sd">        metric_names: Names of the metrics, for which to retrieve predictions.</span>
+<span class="sd">        label_to_feature_dict: Mapping from an int label to</span>
+<span class="sd">            a Parameterization. These data points are predicted.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A mapping from an int label to a mapping of metric names to tuples</span>
+<span class="sd">        of predicted metric mean and SEM, of form:</span>
+<span class="sd">        { trial_index -&gt; { metric_name: ( mean, SEM ) } }.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">predictions_dict</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Store predictions to return</span>
+    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">label_to_feature_dict</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">y_hat</span><span class="p">,</span> <span class="n">se_hat</span> <span class="o">=</span> <span class="n">predict_at_point</span><span class="p">(</span>
+                <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+                <span class="n">obsf</span><span class="o">=</span><span class="n">label_to_feature_dict</span><span class="p">[</span><span class="n">label</span><span class="p">],</span>
+                <span class="n">metric_names</span><span class="o">=</span><span class="n">metric_names</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s2">&quot;The model associated with the current generation strategy &quot;</span>
+                <span class="s2">&quot;step is not one that can be used for predicting values. &quot;</span>
+                <span class="s2">&quot;For example, this may be the Sobol generator associated with the &quot;</span>
+                <span class="s2">&quot;initialization step where quasi-random points are generated. &quot;</span>
+                <span class="s2">&quot;Try again by calling the `AxClient.create_experiment()` &quot;</span>
+                <span class="s2">&quot;method with the `choose_generation_strategy_kwargs=&quot;</span>
+                <span class="s1">&#39;{&quot;num_initialization_trials&quot;: 0}` parameter if you are looking &#39;</span>
+                <span class="s2">&quot;to use a generation strategy without an initialization step that &quot;</span>
+                <span class="s2">&quot;proceeds straight to the Bayesian optimization step, but note &quot;</span>
+                <span class="s2">&quot;that performance of Bayesian optimization can be suboptimal if &quot;</span>
+                <span class="s2">&quot;search space is not sampled well in the initialization phase.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">predictions_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">metric</span><span class="p">:</span> <span class="p">(</span>
+                <span class="n">y_hat</span><span class="p">[</span><span class="n">metric</span><span class="p">],</span>
+                <span class="n">se_hat</span><span class="p">[</span><span class="n">metric</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metric_names</span>
+        <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">predictions_dict</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_compute_scalarized_outcome</span><span class="p">(</span>
+    <span class="n">mean_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">cov_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+    <span class="n">agg_metric_weight_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the mean and variance of a scalarized outcome.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mean_dict: Dictionary of means of individual metrics. e.g.</span>
+<span class="sd">            {&quot;metric1&quot;: 0.1, &quot;metric2&quot;: 0.2}</span>
+<span class="sd">        cov_dict: Dictionary of covariances of each metric pair. e.g.</span>
+<span class="sd">            {&quot;metric1&quot;: {&quot;metric1&quot;: 0.25, &quot;metric2&quot;: 0.0}, &quot;metric2&quot;: {&quot;metric1&quot;: 0.0,</span>
+<span class="sd">            &quot;metric2&quot;: 0.1}}</span>
+<span class="sd">        agg_metric_weight_dict. Dictionary of scalarization weights of the scalarized</span>
+<span class="sd">            outcome. e.g. {&quot;name&quot;: &quot;metric1:agg&quot;, &quot;weight&quot;: {&quot;metric1_c1&quot;: 0.5,</span>
+<span class="sd">             &quot;metric1_c2&quot;: 0.5}}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pred_mean</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">pred_var</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">component_metrics</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">agg_metric_weight_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">metric_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">component_metrics</span><span class="p">):</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">agg_metric_weight_dict</span><span class="p">[</span><span class="n">metric_name</span><span class="p">]</span>
+        <span class="n">pred_mean</span> <span class="o">+=</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">mean_dict</span><span class="p">[</span><span class="n">metric_name</span><span class="p">]</span>
+        <span class="n">pred_var</span> <span class="o">+=</span> <span class="p">(</span><span class="n">weight</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">cov_dict</span><span class="p">[</span><span class="n">metric_name</span><span class="p">][</span><span class="n">metric_name</span><span class="p">]</span>
+        <span class="c1"># include cross-metric covariance</span>
+        <span class="k">for</span> <span class="n">metric_name2</span> <span class="ow">in</span> <span class="n">component_metrics</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">:]:</span>
+            <span class="n">weight2</span> <span class="o">=</span> <span class="n">agg_metric_weight_dict</span><span class="p">[</span><span class="n">metric_name2</span><span class="p">]</span>
+            <span class="n">pred_var</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">weight2</span> <span class="o">*</span> <span class="n">cov_dict</span><span class="p">[</span><span class="n">metric_name</span><span class="p">][</span><span class="n">metric_name2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">pred_mean</span><span class="p">,</span> <span class="n">pred_var</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../">Ax</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ax/">ax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../benchmark/">ax.benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core/">ax.core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../exceptions/">ax.exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../metrics/">ax.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modelbridge/">ax.modelbridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../models/">ax.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plot/">ax.plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../runners/">ax.runners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../service/">ax.service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage/">ax.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../telemetry/">ax.telemetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../utils/">ax.utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../">Documentation overview</a><ul>
+  <li><a href="../../../">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

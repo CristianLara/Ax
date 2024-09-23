@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ax.utils.common.constants &#8212; Ax 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/basic.css?v=c058f7c8" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../../_static/documentation_options.js?v=3ff7b324"></script>
+    <script src="../../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../../search/" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ax.utils.common.constants</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># Copyright (c) Meta Platforms, Inc. and affiliates.</span>
+<span class="c1">#</span>
+<span class="c1"># This source code is licensed under the MIT license found in the</span>
+<span class="c1"># LICENSE file in the root directory of this source tree.</span>
+
+<span class="c1"># pyre-strict</span>
+
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">unique</span>
+
+
+<span class="c1"># -------------------------- Warnings --------------------------</span>
+
+
+<span class="n">EXPERIMENT_IS_TEST_WARNING</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;The is_test flag has been set to True. &quot;</span>
+    <span class="s2">&quot;This flag is meant purely for development and integration testing purposes. &quot;</span>
+    <span class="s2">&quot;If you are running a live experiment, please set this flag to False&quot;</span>
+<span class="p">)</span>
+
+
+<span class="c1"># -------------------------- Error messages --------------------------</span>
+
+
+<span class="n">UNEXPECTED_METRIC_COMBINATION</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">Unexpected combination of dummy base `Metric` class metrics and `Metric` </span><span class="se">\</span>
+<span class="s2">subclasses with defined fetching logic.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+
+<span class="c1"># --------------------------- Reserved keys ---------------------------</span>
+
+
+<div class="viewcode-block" id="Keys">
+<a class="viewcode-back" href="../../../../../utils/#ax.utils.common.constants.Keys">[docs]</a>
+<span class="nd">@unique</span>
+<span class="k">class</span> <span class="nc">Keys</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enum of reserved keys in options dicts etc, alphabetized.</span>
+
+
+<span class="sd">    NOTE: Useful for keys in dicts that correspond to kwargs to</span>
+<span class="sd">    classes or functions and/or are used in multiple places.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ACQF_KWARGS</span> <span class="o">=</span> <span class="s2">&quot;acquisition_function_kwargs&quot;</span>
+    <span class="n">AUTOSET_SURROGATE</span> <span class="o">=</span> <span class="s2">&quot;autoset_surrogate&quot;</span>
+    <span class="n">BATCH_INIT_CONDITIONS</span> <span class="o">=</span> <span class="s2">&quot;batch_initial_conditions&quot;</span>
+    <span class="n">CANDIDATE_SET</span> <span class="o">=</span> <span class="s2">&quot;candidate_set&quot;</span>
+    <span class="n">CANDIDATE_SIZE</span> <span class="o">=</span> <span class="s2">&quot;candidate_size&quot;</span>
+    <span class="n">COST_AWARE_UTILITY</span> <span class="o">=</span> <span class="s2">&quot;cost_aware_utility&quot;</span>
+    <span class="n">COST_INTERCEPT</span> <span class="o">=</span> <span class="s2">&quot;cost_intercept&quot;</span>
+    <span class="n">CURRENT_VALUE</span> <span class="o">=</span> <span class="s2">&quot;current_value&quot;</span>
+    <span class="n">EXPAND</span> <span class="o">=</span> <span class="s2">&quot;expand&quot;</span>
+    <span class="n">EXPECTED_ACQF_VAL</span> <span class="o">=</span> <span class="s2">&quot;expected_acquisition_value&quot;</span>
+    <span class="n">FIDELITY_FEATURES</span> <span class="o">=</span> <span class="s2">&quot;fidelity_features&quot;</span>
+    <span class="n">FIDELITY_WEIGHTS</span> <span class="o">=</span> <span class="s2">&quot;fidelity_weights&quot;</span>
+    <span class="n">FRAC_RANDOM</span> <span class="o">=</span> <span class="s2">&quot;frac_random&quot;</span>
+    <span class="n">FULL_PARAMETERIZATION</span> <span class="o">=</span> <span class="s2">&quot;full_parameterization&quot;</span>
+    <span class="n">IMMUTABLE_SEARCH_SPACE_AND_OPT_CONF</span> <span class="o">=</span> <span class="s2">&quot;immutable_search_space_and_opt_config&quot;</span>
+    <span class="n">MAXIMIZE</span> <span class="o">=</span> <span class="s2">&quot;maximize&quot;</span>
+    <span class="n">METADATA</span> <span class="o">=</span> <span class="s2">&quot;metadata&quot;</span>
+    <span class="n">METRIC_NAMES</span> <span class="o">=</span> <span class="s2">&quot;metric_names&quot;</span>
+    <span class="n">NUM_FANTASIES</span> <span class="o">=</span> <span class="s2">&quot;num_fantasies&quot;</span>
+    <span class="n">NUM_INNER_RESTARTS</span> <span class="o">=</span> <span class="s2">&quot;num_inner_restarts&quot;</span>
+    <span class="n">NUM_RESTARTS</span> <span class="o">=</span> <span class="s2">&quot;num_restarts&quot;</span>
+    <span class="n">NUM_TRACE_OBSERVATIONS</span> <span class="o">=</span> <span class="s2">&quot;num_trace_observations&quot;</span>
+    <span class="n">OBJECTIVE</span> <span class="o">=</span> <span class="s2">&quot;objective&quot;</span>
+    <span class="n">ONLY_SURROGATE</span> <span class="o">=</span> <span class="s2">&quot;only_surrogate&quot;</span>
+    <span class="n">OPTIMIZER_KWARGS</span> <span class="o">=</span> <span class="s2">&quot;optimizer_kwargs&quot;</span>
+    <span class="n">PREFERENCE_DATA</span> <span class="o">=</span> <span class="s2">&quot;preference_data&quot;</span>
+    <span class="n">PRIMARY_SURROGATE</span> <span class="o">=</span> <span class="s2">&quot;primary&quot;</span>
+    <span class="n">PROJECT</span> <span class="o">=</span> <span class="s2">&quot;project&quot;</span>
+    <span class="n">TRIAL_COMPLETION_TIMESTAMP</span> <span class="o">=</span> <span class="s2">&quot;trial_completion_timestamp&quot;</span>
+    <span class="n">QMC</span> <span class="o">=</span> <span class="s2">&quot;qmc&quot;</span>
+    <span class="n">RAW_INNER_SAMPLES</span> <span class="o">=</span> <span class="s2">&quot;raw_inner_samples&quot;</span>
+    <span class="n">RAW_SAMPLES</span> <span class="o">=</span> <span class="s2">&quot;raw_samples&quot;</span>
+    <span class="n">SAMPLER</span> <span class="o">=</span> <span class="s2">&quot;sampler&quot;</span>
+    <span class="n">SEED_INNER</span> <span class="o">=</span> <span class="s2">&quot;seed_inner&quot;</span>
+    <span class="n">SEQUENTIAL</span> <span class="o">=</span> <span class="s2">&quot;sequential&quot;</span>
+    <span class="n">STATE_DICT</span> <span class="o">=</span> <span class="s2">&quot;state_dict&quot;</span>
+    <span class="n">SUBCLASS</span> <span class="o">=</span> <span class="s2">&quot;subclass&quot;</span>
+    <span class="n">SUBSET_MODEL</span> <span class="o">=</span> <span class="s2">&quot;subset_model&quot;</span>
+    <span class="n">TASK_FEATURES</span> <span class="o">=</span> <span class="s2">&quot;task_features&quot;</span>
+    <span class="n">WARM_START_REFITTING</span> <span class="o">=</span> <span class="s2">&quot;warm_start_refitting&quot;</span>
+    <span class="n">X_BASELINE</span> <span class="o">=</span> <span class="s2">&quot;X_baseline&quot;</span>
+    <span class="n">PAIRWISE_PREFERENCE_QUERY</span> <span class="o">=</span> <span class="s2">&quot;pairwise_pref_query&quot;</span></div>
+
+
+
+<span class="n">DEFAULT_WINSORIZATION_LIMITS_MINIMIZATION</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="n">DEFAULT_WINSORIZATION_LIMITS_MAXIMIZATION</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+<span class="n">TESTENV_ENV_KEY</span> <span class="o">=</span> <span class="s2">&quot;TESTENV&quot;</span>
+<span class="n">TESTENV_ENV_VAL</span> <span class="o">=</span> <span class="s2">&quot;True&quot;</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../">Ax</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search/" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../ax/">ax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../benchmark/">ax.benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../core/">ax.core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../exceptions/">ax.exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../metrics/">ax.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../modelbridge/">ax.modelbridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../models/">ax.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../plot/">ax.plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../runners/">ax.runners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../service/">ax.service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../storage/">ax.storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../telemetry/">ax.telemetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../utils/">ax.utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../">Documentation overview</a><ul>
+  <li><a href="../../../../">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
