@@ -119,6 +119,11 @@ classes or functions and/or are used in multiple places.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="ax.utils.common.constants.Keys.EXPERIMENT_TOTAL_CONCURRENT_ARMS">
+<span class="sig-name descname"><span class="pre">EXPERIMENT_TOTAL_CONCURRENT_ARMS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'total_concurrent_arms'</span></em><a class="headerlink" href="#ax.utils.common.constants.Keys.EXPERIMENT_TOTAL_CONCURRENT_ARMS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="ax.utils.common.constants.Keys.FIDELITY_FEATURES">
 <span class="sig-name descname"><span class="pre">FIDELITY_FEATURES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'fidelity_features'</span></em><a class="headerlink" href="#ax.utils.common.constants.Keys.FIDELITY_FEATURES" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -226,6 +231,11 @@ classes or functions and/or are used in multiple places.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ax.utils.common.constants.Keys.RAW_SAMPLES">
 <span class="sig-name descname"><span class="pre">RAW_SAMPLES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'raw_samples'</span></em><a class="headerlink" href="#ax.utils.common.constants.Keys.RAW_SAMPLES" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ax.utils.common.constants.Keys.RESUMED_FROM_STORAGE_TS">
+<span class="sig-name descname"><span class="pre">RESUMED_FROM_STORAGE_TS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'resumed_from_storage_timestamps'</span></em><a class="headerlink" href="#ax.utils.common.constants.Keys.RESUMED_FROM_STORAGE_TS" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1202,6 +1212,26 @@ operator.</p>
 otherwise it will be discarded.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ax.utils.common.testutils.setup_import_mocks">
+<span class="sig-prename descclassname"><span class="pre">ax.utils.common.testutils.</span></span><span class="sig-name descname"><span class="pre">setup_import_mocks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mocked_import_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mock_config_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/ax/utils/common/testutils/#setup_import_mocks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ax.utils.common.testutils.setup_import_mocks" title="Link to this definition">¶</a></dt>
+<dd><p>This function mocks expensive modules used in tests. It must be called before
+those modules are imported or it will not work.  Stubbing out these modules
+will obviously affect the behavior of all tests that use it, so be sure modules
+being mocked are not important to your test.  It will also mock all child modules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mocked_import_paths</strong> – List of module paths to mock.</p></li>
+<li><p><strong>mock_config_dict</strong> – Dictionary of attributes to mock on the modules being mocked.
+This is useful if the import is expensive, but there is still some
+functionality it has the test relies on.  These attributes will be
+set on all modules being mocked.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

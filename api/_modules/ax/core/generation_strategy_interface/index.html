@@ -68,6 +68,10 @@
     <span class="c1"># it exists.</span>
     <span class="n">_experiment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Experiment</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="c1"># Constant for default number of arms to generate if `n` is not specified in</span>
+    <span class="c1"># `gen` call and &quot;total_concurrent_arms&quot; is not set in experiment properties.</span>
+    <span class="n">DEFAULT_N</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
 
@@ -81,7 +85,7 @@
         <span class="c1"># TODO[drfreund, danielcohennyc, mgarrard]: Update the format of the arguments</span>
         <span class="c1"># below as we find the right one.</span>
         <span class="n">num_generator_runs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">n</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">GeneratorRun</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Produce ``GeneratorRun``-s for multiple trials at once with the possibility</span>
 <span class="sd">        of joining ``GeneratorRun``-s from multiple models into one ``BatchTrial``.</span>

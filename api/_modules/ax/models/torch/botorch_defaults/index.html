@@ -824,7 +824,7 @@
         <span class="n">gp</span> <span class="o">=</span> <span class="n">SingleTaskMultiFidelityGP</span><span class="p">(</span>
             <span class="n">train_X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
             <span class="n">train_Y</span><span class="o">=</span><span class="n">Y</span><span class="p">,</span>
-            <span class="n">data_fidelity</span><span class="o">=</span><span class="n">fidelity_features</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">data_fidelities</span><span class="o">=</span><span class="n">fidelity_features</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span>
             <span class="n">input_transform</span><span class="o">=</span><span class="n">warp_tf</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>

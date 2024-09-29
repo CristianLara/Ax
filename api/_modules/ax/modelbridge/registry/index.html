@@ -471,7 +471,7 @@
 
 <span class="sd">    To instantiate a model in this enum, simply call an enum member like so:</span>
 <span class="sd">    `Models.SOBOL(search_space=search_space)` or</span>
-<span class="sd">    `Models.GPEI(experiment=experiment, data=data)`. Keyword arguments</span>
+<span class="sd">    `Models.BOTORCH(experiment=experiment, data=data)`. Keyword arguments</span>
 <span class="sd">    specified to the call will be passed into the model or the model bridge</span>
 <span class="sd">    constructors according to their keyword.</span>
 
@@ -635,12 +635,9 @@
     <span class="n">generator_run</span><span class="p">:</span> <span class="n">GeneratorRun</span><span class="p">,</span> <span class="n">model_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Model</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Extracts serialized post-generation model state from a generator run and</span>
-<span class="sd">    deserializes it. Fails if no post-generation model state was specified on the</span>
-<span class="sd">    generator run.</span>
+<span class="sd">    deserializes it.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">serialized_model_state</span> <span class="o">=</span> <span class="n">not_none</span><span class="p">(</span><span class="n">generator_run</span><span class="o">.</span><span class="n">_model_state_after_gen</span><span class="p">)</span>
-    <span class="c1"># We don&#39;t want to update `model_kwargs` on the `GenerationStep`,</span>
-    <span class="c1"># just to add to them for the purpose of this function.</span>
+    <span class="n">serialized_model_state</span> <span class="o">=</span> <span class="n">generator_run</span><span class="o">.</span><span class="n">_model_state_after_gen</span> <span class="ow">or</span> <span class="p">{}</span>
     <span class="k">return</span> <span class="n">model_class</span><span class="o">.</span><span class="n">deserialize_state</span><span class="p">(</span><span class="n">serialized_model_state</span><span class="p">)</span>
 
 

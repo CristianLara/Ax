@@ -413,7 +413,9 @@
                 <span class="n">status_quo</span><span class="o">.</span><span class="n">parameters</span><span class="p">,</span> <span class="n">raise_error</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">_name_and_store_arm_if_not_exists</span><span class="p">(</span>
-                <span class="n">arm</span><span class="o">=</span><span class="n">status_quo</span><span class="p">,</span> <span class="n">proposed_name</span><span class="o">=</span><span class="s2">&quot;status_quo_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+                <span class="n">arm</span><span class="o">=</span><span class="n">status_quo</span><span class="p">,</span>
+                <span class="n">proposed_name</span><span class="o">=</span><span class="s2">&quot;status_quo_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">),</span>
+                <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_status_quo</span> <span class="o">=</span> <span class="n">status_quo</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="k">if</span> <span class="n">status_quo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_status_quo_weight_override</span> <span class="o">=</span> <span class="n">weight</span>

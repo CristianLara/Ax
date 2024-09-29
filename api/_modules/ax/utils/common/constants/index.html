@@ -41,8 +41,19 @@
 
 <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">unique</span>
 
+<span class="c1"># ------------------------- Miscellaneous -------------------------</span>
 
-<span class="c1"># -------------------------- Warnings --------------------------</span>
+
+<span class="n">TS_FMT</span> <span class="o">=</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S.</span><span class="si">%f</span><span class="s2">&quot;</span>
+
+<span class="n">DEFAULT_WINSORIZATION_LIMITS_MINIMIZATION</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="n">DEFAULT_WINSORIZATION_LIMITS_MAXIMIZATION</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+<span class="n">TESTENV_ENV_KEY</span> <span class="o">=</span> <span class="s2">&quot;TESTENV&quot;</span>
+<span class="n">TESTENV_ENV_VAL</span> <span class="o">=</span> <span class="s2">&quot;True&quot;</span>
+
+
+<span class="c1"># --------------------------- Warnings ---------------------------</span>
 
 
 <span class="n">EXPERIMENT_IS_TEST_WARNING</span> <span class="o">=</span> <span class="p">(</span>
@@ -52,7 +63,7 @@
 <span class="p">)</span>
 
 
-<span class="c1"># -------------------------- Error messages --------------------------</span>
+<span class="c1"># ------------------------ Error messages ------------------------</span>
 
 
 <span class="n">UNEXPECTED_METRIC_COMBINATION</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
@@ -61,7 +72,7 @@
 <span class="s2">&quot;&quot;&quot;</span>
 
 
-<span class="c1"># --------------------------- Reserved keys ---------------------------</span>
+<span class="c1"># ------------------------- Reserved keys -------------------------</span>
 
 
 <div class="viewcode-block" id="Keys">
@@ -85,6 +96,7 @@
     <span class="n">CURRENT_VALUE</span> <span class="o">=</span> <span class="s2">&quot;current_value&quot;</span>
     <span class="n">EXPAND</span> <span class="o">=</span> <span class="s2">&quot;expand&quot;</span>
     <span class="n">EXPECTED_ACQF_VAL</span> <span class="o">=</span> <span class="s2">&quot;expected_acquisition_value&quot;</span>
+    <span class="n">EXPERIMENT_TOTAL_CONCURRENT_ARMS</span> <span class="o">=</span> <span class="s2">&quot;total_concurrent_arms&quot;</span>
     <span class="n">FIDELITY_FEATURES</span> <span class="o">=</span> <span class="s2">&quot;fidelity_features&quot;</span>
     <span class="n">FIDELITY_WEIGHTS</span> <span class="o">=</span> <span class="s2">&quot;fidelity_weights&quot;</span>
     <span class="n">FRAC_RANDOM</span> <span class="o">=</span> <span class="s2">&quot;frac_random&quot;</span>
@@ -107,6 +119,7 @@
     <span class="n">QMC</span> <span class="o">=</span> <span class="s2">&quot;qmc&quot;</span>
     <span class="n">RAW_INNER_SAMPLES</span> <span class="o">=</span> <span class="s2">&quot;raw_inner_samples&quot;</span>
     <span class="n">RAW_SAMPLES</span> <span class="o">=</span> <span class="s2">&quot;raw_samples&quot;</span>
+    <span class="n">RESUMED_FROM_STORAGE_TS</span> <span class="o">=</span> <span class="s2">&quot;resumed_from_storage_timestamps&quot;</span>
     <span class="n">SAMPLER</span> <span class="o">=</span> <span class="s2">&quot;sampler&quot;</span>
     <span class="n">SEED_INNER</span> <span class="o">=</span> <span class="s2">&quot;seed_inner&quot;</span>
     <span class="n">SEQUENTIAL</span> <span class="o">=</span> <span class="s2">&quot;sequential&quot;</span>
@@ -118,13 +131,6 @@
     <span class="n">X_BASELINE</span> <span class="o">=</span> <span class="s2">&quot;X_baseline&quot;</span>
     <span class="n">PAIRWISE_PREFERENCE_QUERY</span> <span class="o">=</span> <span class="s2">&quot;pairwise_pref_query&quot;</span></div>
 
-
-
-<span class="n">DEFAULT_WINSORIZATION_LIMITS_MINIMIZATION</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
-<span class="n">DEFAULT_WINSORIZATION_LIMITS_MAXIMIZATION</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
-
-<span class="n">TESTENV_ENV_KEY</span> <span class="o">=</span> <span class="s2">&quot;TESTENV&quot;</span>
-<span class="n">TESTENV_ENV_VAL</span> <span class="o">=</span> <span class="s2">&quot;True&quot;</span>
 </pre></div>
 
           </div>

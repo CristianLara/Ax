@@ -688,6 +688,13 @@
 </li>
       </ul></li>
       <li>
+    ax.modelbridge.transforms.transform_to_new_sq
+
+      <ul>
+        <li><a href="../modelbridge/#module-ax.modelbridge.transforms.transform_to_new_sq">module</a>
+</li>
+      </ul></li>
+      <li>
     ax.modelbridge.transforms.trial_as_task
 
       <ul>
@@ -804,13 +811,6 @@
 
       <ul>
         <li><a href="../models/#module-ax.models.torch.botorch_kg">module</a>
-</li>
-      </ul></li>
-      <li>
-    ax.models.torch.botorch_mes
-
-      <ul>
-        <li><a href="../models/#module-ax.models.torch.botorch_mes">module</a>
 </li>
       </ul></li>
       <li>
@@ -1385,14 +1385,14 @@
         <li><a href="../models/#ax.models.torch.botorch_modular.surrogate.Surrogate.clone_reset">(ax.models.torch.botorch_modular.surrogate.Surrogate method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="../core/#ax.core.batch_trial.BatchTrial.clone_to">clone_to() (ax.core.batch_trial.BatchTrial method)</a>
 
       <ul>
         <li><a href="../core/#ax.core.trial.Trial.clone_to">(ax.core.trial.Trial method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="../core/#ax.core.experiment.Experiment.clone_with">clone_with() (ax.core.experiment.Experiment method)</a>
 </li>
       <li><a href="../core/#ax.core.optimization_config.MultiObjectiveOptimizationConfig.clone_with_args">clone_with_args() (ax.core.optimization_config.MultiObjectiveOptimizationConfig method)</a>
@@ -1467,6 +1467,8 @@
         <li><a href="../modelbridge/#ax.modelbridge.transforms.relativize.Relativize.control_as_constant">(ax.modelbridge.transforms.relativize.Relativize property)</a>
 </li>
         <li><a href="../modelbridge/#ax.modelbridge.transforms.relativize.RelativizeWithConstantControl.control_as_constant">(ax.modelbridge.transforms.relativize.RelativizeWithConstantControl property)</a>
+</li>
+        <li><a href="../modelbridge/#ax.modelbridge.transforms.transform_to_new_sq.TransformToNewSQ.control_as_constant">(ax.modelbridge.transforms.transform_to_new_sq.TransformToNewSQ property)</a>
 </li>
       </ul></li>
       <li><a href="../modelbridge/#ax.modelbridge.transforms.convert_metric_names.convert_mt_observations">convert_mt_observations() (in module ax.modelbridge.transforms.convert_metric_names)</a>
@@ -1557,6 +1559,8 @@
 </li>
       <li><a href="../modelbridge/#ax.modelbridge.registry.ModelSetup.default_model_kwargs">default_model_kwargs (ax.modelbridge.registry.ModelSetup attribute)</a>
 </li>
+      <li><a href="../core/#ax.core.generation_strategy_interface.GenerationStrategyInterface.DEFAULT_N">DEFAULT_N (ax.core.generation_strategy_interface.GenerationStrategyInterface attribute)</a>
+</li>
       <li><a href="../core/#ax.core.experiment.Experiment.default_trial_type">default_trial_type (ax.core.experiment.Experiment property)</a>
 
       <ul>
@@ -1577,10 +1581,10 @@
 </li>
       <li><a href="../modelbridge/#ax.modelbridge.transforms.derelativize.Derelativize">Derelativize (class in ax.modelbridge.transforms.derelativize)</a>
 </li>
-      <li><a href="../modelbridge/#ax.modelbridge.transforms.utils.derelativize_optimization_config_with_raw_status_quo">derelativize_optimization_config_with_raw_status_quo() (in module ax.modelbridge.transforms.utils)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="../modelbridge/#ax.modelbridge.transforms.utils.derelativize_optimization_config_with_raw_status_quo">derelativize_optimization_config_with_raw_status_quo() (in module ax.modelbridge.transforms.utils)</a>
+</li>
       <li><a href="../core/#ax.core.multi_type_experiment.MultiTypeExperiment.description">description (ax.core.multi_type_experiment.MultiTypeExperiment attribute)</a>
 </li>
       <li><a href="../utils/#ax.utils.common.serialization.SerializationMixin.deserialize_init_args">deserialize_init_args() (ax.utils.common.serialization.SerializationMixin class method)</a>
@@ -1701,10 +1705,10 @@
 </li>
       <li><a href="../utils/#ax.utils.common.executils.execute_with_timeout">execute_with_timeout() (in module ax.utils.common.executils)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="../utils/#ax.utils.common.constants.Keys.EXPAND">EXPAND (ax.utils.common.constants.Keys attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="../utils/#ax.utils.common.constants.Keys.EXPECTED_ACQF_VAL">EXPECTED_ACQF_VAL (ax.utils.common.constants.Keys attribute)</a>
 </li>
       <li><a href="../core/#ax.core.base_trial.TrialStatus.expecting_data">expecting_data (ax.core.base_trial.TrialStatus property)</a>
@@ -1718,6 +1722,8 @@
 </li>
       </ul></li>
       <li><a href="../core/#ax.core.experiment.Experiment">Experiment (class in ax.core.experiment)</a>
+</li>
+      <li><a href="../utils/#ax.utils.common.constants.Keys.EXPERIMENT_TOTAL_CONCURRENT_ARMS">EXPERIMENT_TOTAL_CONCURRENT_ARMS (ax.utils.common.constants.Keys attribute)</a>
 </li>
       <li><a href="../core/#ax.core.experiment.Experiment.experiment_type">experiment_type (ax.core.experiment.Experiment property)</a>
 </li>
@@ -1825,6 +1831,8 @@
 </li>
       <li><a href="../utils/#ax.utils.common.kwargs.filter_kwargs">filter_kwargs() (in module ax.utils.common.kwargs)</a>
 </li>
+      <li><a href="../core/#ax.core.multi_type_experiment.filter_trials_by_type">filter_trials_by_type() (in module ax.core.multi_type_experiment)</a>
+</li>
       <li><a href="../utils/#ax.utils.sensitivity.sobol_measures.SobolSensitivity.first_order_indices">first_order_indices() (ax.utils.sensitivity.sobol_measures.SobolSensitivity method)</a>
 
       <ul>
@@ -1924,8 +1932,6 @@
 </li>
         <li><a href="../models/#ax.models.torch.botorch_kg.KnowledgeGradient.gen">(ax.models.torch.botorch_kg.KnowledgeGradient method)</a>
 </li>
-        <li><a href="../models/#ax.models.torch.botorch_mes.MaxValueEntropySearch.gen">(ax.models.torch.botorch_mes.MaxValueEntropySearch method)</a>
-</li>
         <li><a href="../models/#ax.models.torch.botorch_modular.model.BoTorchModel.gen">(ax.models.torch.botorch_modular.model.BoTorchModel method)</a>
 </li>
         <li><a href="../models/#ax.models.torch.botorch_moo.MultiObjectiveBotorchModel.gen">(ax.models.torch.botorch_moo.MultiObjectiveBotorchModel method)</a>
@@ -2017,12 +2023,12 @@
 </li>
       <li><a href="../models/#ax.models.torch.botorch_moo_defaults.get_EHVI">get_EHVI() (in module ax.models.torch.botorch_moo_defaults)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="../modelbridge/#ax.modelbridge.factory.get_empirical_bayes_thompson">get_empirical_bayes_thompson() (in module ax.modelbridge.factory)</a>
 </li>
       <li><a href="../modelbridge/#ax.modelbridge.factory.get_factorial">get_factorial() (in module ax.modelbridge.factory)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="../core/#ax.core.observation.get_feature_cols">get_feature_cols() (in module ax.core.observation)</a>
 </li>
       <li><a href="../models/#ax.models.torch.botorch.get_feature_importances_from_botorch_model">get_feature_importances_from_botorch_model() (in module ax.models.torch.botorch)</a>
@@ -2046,6 +2052,8 @@
       <li><a href="../utils/#ax.utils.common.logger.get_logger">get_logger() (in module ax.utils.common.logger)</a>
 </li>
       <li><a href="../models/#ax.models.torch.cbo_lcea.get_map_model">get_map_model() (in module ax.models.torch.cbo_lcea)</a>
+</li>
+      <li><a href="../modelbridge/#ax.modelbridge.transforms.relativize.get_metric_index">get_metric_index() (in module ax.modelbridge.transforms.relativize)</a>
 </li>
       <li><a href="../core/#ax.core.trial.Trial.get_metric_mean">get_metric_mean() (ax.core.trial.Trial method)</a>
 </li>
@@ -2100,6 +2108,8 @@
       <li><a href="../utils/#ax.utils.testing.torch_stubs.get_torch_test_data">get_torch_test_data() (in module ax.utils.testing.torch_stubs)</a>
 </li>
       <li><a href="../modelbridge/#ax.modelbridge.base.ModelBridge.get_training_data">get_training_data() (ax.modelbridge.base.ModelBridge method)</a>
+</li>
+      <li><a href="../core/#ax.core.multi_type_experiment.get_trial_indices_for_statuses">get_trial_indices_for_statuses() (in module ax.core.multi_type_experiment)</a>
 </li>
       <li><a href="../core/#ax.core.experiment.Experiment.get_trials_by_indices">get_trials_by_indices() (ax.core.experiment.Experiment method)</a>
 </li>
@@ -2459,8 +2469,6 @@
 </li>
       <li><a href="../exceptions/#ax.exceptions.generation_strategy.MaxParallelismReachedException">MaxParallelismReachedException</a>
 </li>
-      <li><a href="../models/#ax.models.torch.botorch_mes.MaxValueEntropySearch">MaxValueEntropySearch (class in ax.models.torch.botorch_mes)</a>
-</li>
       <li><a href="../core/#ax.core.arm.Arm.md5hash">md5hash() (ax.core.arm.Arm static method)</a>
 </li>
       <li><a href="../utils/#ax.utils.sensitivity.derivative_measures.GpDGSMGpMean.mean_gradients">mean_gradients (ax.utils.sensitivity.derivative_measures.GpDGSMGpMean attribute)</a>
@@ -2510,8 +2518,6 @@
       <li><a href="../utils/#ax.utils.measurement.synthetic_functions.SyntheticFunction.minimums">minimums (ax.utils.measurement.synthetic_functions.SyntheticFunction property)</a>
 </li>
       <li><a href="../exceptions/#ax.exceptions.core.MisconfiguredExperiment">MisconfiguredExperiment</a>
-</li>
-      <li><a href="../modelbridge/#ax.modelbridge.transforms.relativize.BaseRelativize.MISSING_STATUS_QUO_ERROR">MISSING_STATUS_QUO_ERROR (ax.modelbridge.transforms.relativize.BaseRelativize attribute)</a>
 </li>
       <li><a href="../exceptions/#ax.exceptions.data_provider.MissingDataError">MissingDataError</a>
 </li>
@@ -2705,6 +2711,8 @@
 </li>
         <li><a href="../modelbridge/#module-ax.modelbridge.transforms.time_as_feature">ax.modelbridge.transforms.time_as_feature</a>
 </li>
+        <li><a href="../modelbridge/#module-ax.modelbridge.transforms.transform_to_new_sq">ax.modelbridge.transforms.transform_to_new_sq</a>
+</li>
         <li><a href="../modelbridge/#module-ax.modelbridge.transforms.trial_as_task">ax.modelbridge.transforms.trial_as_task</a>
 </li>
         <li><a href="../modelbridge/#module-ax.modelbridge.transforms.unit_x">ax.modelbridge.transforms.unit_x</a>
@@ -2738,8 +2746,6 @@
         <li><a href="../models/#module-ax.models.torch.botorch_defaults">ax.models.torch.botorch_defaults</a>
 </li>
         <li><a href="../models/#module-ax.models.torch.botorch_kg">ax.models.torch.botorch_kg</a>
-</li>
-        <li><a href="../models/#module-ax.models.torch.botorch_mes">ax.models.torch.botorch_mes</a>
 </li>
         <li><a href="../models/#module-ax.models.torch.botorch_modular.acquisition">ax.models.torch.botorch_modular.acquisition</a>
 </li>
@@ -3004,10 +3010,10 @@
       </ul></li>
       <li><a href="../utils/#ax.utils.common.result.Ok">Ok (class in ax.utils.common.result)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="../modelbridge/#ax.modelbridge.transforms.one_hot.OneHot">OneHot (class in ax.modelbridge.transforms.one_hot)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="../modelbridge/#ax.modelbridge.transforms.one_hot.OneHotEncoder">OneHotEncoder (class in ax.modelbridge.transforms.one_hot)</a>
 </li>
       <li><a href="../utils/#ax.utils.common.constants.Keys.ONLY_SURROGATE">ONLY_SURROGATE (ax.utils.common.constants.Keys attribute)</a>
@@ -3020,6 +3026,8 @@
 
       <ul>
         <li><a href="../core/#ax.core.generator_run.GeneratorRun.optimization_config">(ax.core.generator_run.GeneratorRun property)</a>
+</li>
+        <li><a href="../core/#ax.core.multi_type_experiment.MultiTypeExperiment.optimization_config">(ax.core.multi_type_experiment.MultiTypeExperiment property)</a>
 </li>
         <li><a href="../modelbridge/#ax.modelbridge.base.BaseGenArgs.optimization_config">(ax.modelbridge.base.BaseGenArgs attribute)</a>
 </li>
@@ -3268,10 +3276,10 @@
 </li>
       <li><a href="../utils/#ax.utils.measurement.synthetic_functions.SyntheticFunction.required_dimensionality">required_dimensionality (ax.utils.measurement.synthetic_functions.SyntheticFunction property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="../utils/#ax.utils.testing.backend_simulator.BackendSimulator.reset">reset() (ax.utils.testing.backend_simulator.BackendSimulator method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="../core/#ax.core.experiment.Experiment.reset_runners">reset_runners() (ax.core.experiment.Experiment method)</a>
 
       <ul>
@@ -3279,6 +3287,8 @@
 </li>
       </ul></li>
       <li><a href="../utils/#ax.utils.common.result.Result">Result (class in ax.utils.common.result)</a>
+</li>
+      <li><a href="../utils/#ax.utils.common.constants.Keys.RESUMED_FROM_STORAGE_TS">RESUMED_FROM_STORAGE_TS (ax.utils.common.constants.Keys attribute)</a>
 </li>
       <li><a href="../utils/#ax.utils.common.executils.retry_on_exception">retry_on_exception() (in module ax.utils.common.executils)</a>
 </li>
@@ -3316,6 +3326,8 @@
         <li><a href="../core/#ax.core.multi_type_experiment.MultiTypeExperiment.runner_for_trial">(ax.core.multi_type_experiment.MultiTypeExperiment method)</a>
 </li>
       </ul></li>
+      <li><a href="../core/#ax.core.multi_type_experiment.MultiTypeExperiment.runner_for_trial_type">runner_for_trial_type() (ax.core.multi_type_experiment.MultiTypeExperiment method)</a>
+</li>
       <li><a href="../core/#ax.core.base_trial.TrialStatus.RUNNING">RUNNING (ax.core.base_trial.TrialStatus attribute)</a>
 </li>
       <li><a href="../utils/#ax.utils.testing.backend_simulator.BackendSimulatorState.running">running (ax.utils.testing.backend_simulator.BackendSimulatorState attribute)</a>
@@ -3424,6 +3436,8 @@
 </li>
       <li><a href="../utils/#ax.utils.common.testutils.TestCase.setUp">setUp() (ax.utils.common.testutils.TestCase method)</a>
 </li>
+      <li><a href="../utils/#ax.utils.common.testutils.setup_import_mocks">setup_import_mocks() (in module ax.utils.common.testutils)</a>
+</li>
       <li><a href="../utils/#ax.utils.flake8_plugins.docstring_checker.should_check">should_check() (in module ax.utils.flake8_plugins.docstring_checker)</a>
 </li>
       <li><a href="../core/#ax.core.arm.Arm.signature">signature (ax.core.arm.Arm property)</a>
@@ -3446,10 +3460,10 @@
 </li>
       <li><a href="../utils/#ax.utils.testing.mock.skip_fit_gpytorch_mll">skip_fit_gpytorch_mll() (in module ax.utils.testing.mock)</a>
 </li>
-      <li><a href="../utils/#ax.utils.testing.mock.skip_fit_gpytorch_mll_context_manager">skip_fit_gpytorch_mll_context_manager() (in module ax.utils.testing.mock)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="../utils/#ax.utils.testing.mock.skip_fit_gpytorch_mll_context_manager">skip_fit_gpytorch_mll_context_manager() (in module ax.utils.testing.mock)</a>
+</li>
       <li><a href="../modelbridge/#ax.modelbridge.registry.Models.SOBOL">SOBOL (ax.modelbridge.registry.Models attribute)</a>
 </li>
       <li><a href="../models/#ax.models.random.sobol.SobolGenerator">SobolGenerator (class in ax.models.random.sobol)</a>
@@ -3682,10 +3696,10 @@
 </li>
       <li><a href="../models/#ax.models.torch.botorch_modular.surrogate.Surrogate.training_data">training_data (ax.models.torch.botorch_modular.surrogate.Surrogate property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="../modelbridge/#ax.modelbridge.base.ModelBridge.training_in_design">training_in_design (ax.modelbridge.base.ModelBridge property)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="../modelbridge/#ax.modelbridge.transforms.base.Transform">Transform (class in ax.modelbridge.transforms.base)</a>
 </li>
       <li><a href="../modelbridge/#ax.modelbridge.transforms.one_hot.OneHotEncoder.transform">transform() (ax.modelbridge.transforms.one_hot.OneHotEncoder method)</a>
@@ -3751,6 +3765,8 @@
 </li>
         <li><a href="../modelbridge/#ax.modelbridge.transforms.stratified_standardize_y.StratifiedStandardizeY.transform_optimization_config">(ax.modelbridge.transforms.stratified_standardize_y.StratifiedStandardizeY method)</a>
 </li>
+        <li><a href="../modelbridge/#ax.modelbridge.transforms.transform_to_new_sq.TransformToNewSQ.transform_optimization_config">(ax.modelbridge.transforms.transform_to_new_sq.TransformToNewSQ method)</a>
+</li>
       </ul></li>
       <li><a href="../modelbridge/#ax.modelbridge.transforms.base.Transform.transform_search_space">transform_search_space() (ax.modelbridge.transforms.base.Transform method)</a>
 
@@ -3759,6 +3775,8 @@
 </li>
       </ul></li>
       <li><a href="../modelbridge/#ax.modelbridge.registry.ModelSetup.transforms">transforms (ax.modelbridge.registry.ModelSetup attribute)</a>
+</li>
+      <li><a href="../modelbridge/#ax.modelbridge.transforms.transform_to_new_sq.TransformToNewSQ">TransformToNewSQ (class in ax.modelbridge.transforms.transform_to_new_sq)</a>
 </li>
       <li><a href="../utils/#ax.utils.flake8_plugins.docstring_checker.DocstringChecker.tree">tree (ax.utils.flake8_plugins.docstring_checker.DocstringChecker attribute)</a>
 </li>
@@ -3868,6 +3886,8 @@
         <li><a href="../modelbridge/#ax.modelbridge.transforms.standardize_y.StandardizeY.untransform_outcome_constraints">(ax.modelbridge.transforms.standardize_y.StandardizeY method)</a>
 </li>
         <li><a href="../modelbridge/#ax.modelbridge.transforms.stratified_standardize_y.StratifiedStandardizeY.untransform_outcome_constraints">(ax.modelbridge.transforms.stratified_standardize_y.StratifiedStandardizeY method)</a>
+</li>
+        <li><a href="../modelbridge/#ax.modelbridge.transforms.transform_to_new_sq.TransformToNewSQ.untransform_outcome_constraints">(ax.modelbridge.transforms.transform_to_new_sq.TransformToNewSQ method)</a>
 </li>
       </ul></li>
   </ul></td>

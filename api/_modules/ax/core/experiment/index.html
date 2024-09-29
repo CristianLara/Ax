@@ -70,7 +70,7 @@
 <span class="kn">from</span> <span class="nn">ax.core.search_space</span> <span class="kn">import</span> <span class="n">HierarchicalSearchSpace</span><span class="p">,</span> <span class="n">SearchSpace</span>
 <span class="kn">from</span> <span class="nn">ax.core.trial</span> <span class="kn">import</span> <span class="n">Trial</span>
 <span class="kn">from</span> <span class="nn">ax.core.types</span> <span class="kn">import</span> <span class="n">ComparisonOp</span><span class="p">,</span> <span class="n">TParameterization</span>
-<span class="kn">from</span> <span class="nn">ax.exceptions.core</span> <span class="kn">import</span> <span class="n">UnsupportedError</span><span class="p">,</span> <span class="n">UserInputError</span>
+<span class="kn">from</span> <span class="nn">ax.exceptions.core</span> <span class="kn">import</span> <span class="n">AxError</span><span class="p">,</span> <span class="n">UnsupportedError</span><span class="p">,</span> <span class="n">UserInputError</span>
 <span class="kn">from</span> <span class="nn">ax.utils.common.base</span> <span class="kn">import</span> <span class="n">Base</span>
 <span class="kn">from</span> <span class="nn">ax.utils.common.constants</span> <span class="kn">import</span> <span class="n">EXPERIMENT_IS_TEST_WARNING</span><span class="p">,</span> <span class="n">Keys</span>
 <span class="kn">from</span> <span class="nn">ax.utils.common.docutils</span> <span class="kn">import</span> <span class="n">copy_doc</span>
@@ -1442,7 +1442,9 @@
         <span class="k">return</span> <span class="n">copied_trials</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_name_and_store_arm_if_not_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="p">:</span> <span class="n">Arm</span><span class="p">,</span> <span class="n">proposed_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_name_and_store_arm_if_not_exists</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="p">:</span> <span class="n">Arm</span><span class="p">,</span> <span class="n">proposed_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">replace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Tries to lookup arm with same signature, otherwise names and stores it.</span>
 
 <span class="sd">        - Looks up if arm already exists on experiment</span>
@@ -1452,6 +1454,8 @@
 <span class="sd">        Args:</span>
 <span class="sd">            arm: The arm object to name.</span>
 <span class="sd">            proposed_name: The name to assign if it doesn&#39;t have one already.</span>
+<span class="sd">            replace: If true, override arm w/ same name and different signature.</span>
+<span class="sd">                If false, raise an error if this conflict occurs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># If arm is identical to an existing arm, return that</span>
@@ -1469,6 +1473,22 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">arm</span><span class="o">.</span><span class="n">has_name</span><span class="p">:</span>
                 <span class="n">arm</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">proposed_name</span>
+
+            <span class="c1"># Check for signature conflict by arm name/proposed name</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">arm</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arms_by_name</span>
+                <span class="ow">and</span> <span class="n">arm</span><span class="o">.</span><span class="n">signature</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arms_by_name</span><span class="p">[</span><span class="n">arm</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">signature</span>
+            <span class="p">):</span>
+                <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Arm with name </span><span class="si">{</span><span class="n">arm</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> already exists on experiment &quot;</span>
+                    <span class="o">+</span> <span class="s2">&quot;with different signature.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">replace</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">error_msg</span><span class="si">}</span><span class="s2"> Replacing the existing arm. &quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">AxError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
+
+            <span class="c1"># Add the new arm</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_register_arm</span><span class="p">(</span><span class="n">arm</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_register_arm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="p">:</span> <span class="n">Arm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>

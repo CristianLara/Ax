@@ -280,9 +280,24 @@
     <span class="k">return</span> <span class="n">msg</span>
 
 
+<div class="viewcode-block" id="setup_import_mocks">
+<a class="viewcode-back" href="../../../../../utils/#ax.utils.common.testutils.setup_import_mocks">[docs]</a>
 <span class="k">def</span> <span class="nf">setup_import_mocks</span><span class="p">(</span>
     <span class="n">mocked_import_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">mock_config_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function mocks expensive modules used in tests. It must be called before</span>
+<span class="sd">    those modules are imported or it will not work.  Stubbing out these modules</span>
+<span class="sd">    will obviously affect the behavior of all tests that use it, so be sure modules</span>
+<span class="sd">    being mocked are not important to your test.  It will also mock all child modules.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mocked_import_paths: List of module paths to mock.</span>
+<span class="sd">        mock_config_dict: Dictionary of attributes to mock on the modules being mocked.</span>
+<span class="sd">            This is useful if the import is expensive, but there is still some</span>
+<span class="sd">            functionality it has the test relies on.  These attributes will be</span>
+<span class="sd">            set on all modules being mocked.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="c1"># pyre-fixme[3]</span>
     <span class="k">def</span> <span class="nf">custom_import</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">import_path</span> <span class="ow">in</span> <span class="n">mocked_import_paths</span><span class="p">:</span>
@@ -306,7 +321,8 @@
     <span class="c1">#  object]] = ..., locals: Optional[Mapping[str, object]] = ..., fromlist:</span>
     <span class="c1">#  Sequence[str] = ..., level: int = ...) -&gt; ModuleType`; used as `(name: str,</span>
     <span class="c1">#  *(Any), **(Any)) -&gt; Any`.</span>
-    <span class="n">builtins</span><span class="o">.</span><span class="n">__import__</span> <span class="o">=</span> <span class="n">custom_import</span>
+    <span class="n">builtins</span><span class="o">.</span><span class="n">__import__</span> <span class="o">=</span> <span class="n">custom_import</span></div>
+
 
 
 <div class="viewcode-block" id="TestCase">
@@ -328,8 +344,10 @@
                 <span class="n">message</span> <span class="o">+=</span> <span class="p">(</span>
                     <span class="s2">&quot; To see a profiler output, set `TestCase.PROFILE_TESTS` to `True`.&quot;</span>
                 <span class="p">)</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_long_test_active_reason</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s2">&quot;gettrace&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">gettrace</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># If we&#39;re in a debugger session, let the test continue running.</span>
+                <span class="k">return</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_long_test_active_reason</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">message</span> <span class="o">+=</span> <span class="p">(</span>
                     <span class="s2">&quot; To specify a reason for a long running test,&quot;</span>
                     <span class="o">+</span> <span class="s2">&quot; utilize the @ax_long_test decorator. If your test &quot;</span>
@@ -388,7 +406,12 @@
         <span class="c1"># BoTorch input standardization warnings.</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span>
             <span class="s2">&quot;ignore&quot;</span><span class="p">,</span>
-            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Input data is not&quot;</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Data \(outcome observations\) is not standardized &quot;</span><span class="p">,</span>
+            <span class="n">category</span><span class="o">=</span><span class="n">InputDataWarning</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span>
+            <span class="s2">&quot;ignore&quot;</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Data \(input features\) is not&quot;</span><span class="p">,</span>
             <span class="n">category</span><span class="o">=</span><span class="n">InputDataWarning</span><span class="p">,</span>
         <span class="p">)</span></div>
 

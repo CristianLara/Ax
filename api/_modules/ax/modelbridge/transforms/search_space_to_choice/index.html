@@ -123,9 +123,11 @@
         <span class="bp">self</span><span class="p">,</span> <span class="n">observation_features</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ObservationFeatures</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ObservationFeatures</span><span class="p">]:</span>
         <span class="k">for</span> <span class="n">obsf</span> <span class="ow">in</span> <span class="n">observation_features</span><span class="p">:</span>
-            <span class="n">obsf</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">parameter_name</span><span class="p">:</span> <span class="n">Arm</span><span class="p">(</span><span class="n">parameters</span><span class="o">=</span><span class="n">obsf</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span><span class="o">.</span><span class="n">signature</span>
-            <span class="p">}</span>
+            <span class="c1"># if obsf.parameters is not an empty dict</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">obsf</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">obsf</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">parameter_name</span><span class="p">:</span> <span class="n">Arm</span><span class="p">(</span><span class="n">parameters</span><span class="o">=</span><span class="n">obsf</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span><span class="o">.</span><span class="n">signature</span>
+                <span class="p">}</span>
         <span class="k">return</span> <span class="n">observation_features</span></div>
 
 
@@ -135,8 +137,10 @@
         <span class="bp">self</span><span class="p">,</span> <span class="n">observation_features</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ObservationFeatures</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ObservationFeatures</span><span class="p">]:</span>
         <span class="k">for</span> <span class="n">obsf</span> <span class="ow">in</span> <span class="n">observation_features</span><span class="p">:</span>
-            <span class="n">signature</span> <span class="o">=</span> <span class="n">obsf</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter_name</span><span class="p">]</span>
-            <span class="n">obsf</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signature_to_parameterization</span><span class="p">[</span><span class="n">signature</span><span class="p">]</span>
+            <span class="c1"># Do not untransform empty dict as it wasn&#39;t transformed in the first place</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">obsf</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">signature</span> <span class="o">=</span> <span class="n">obsf</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter_name</span><span class="p">]</span>
+                <span class="n">obsf</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signature_to_parameterization</span><span class="p">[</span><span class="n">signature</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">observation_features</span></div>
 </div>
 

@@ -57,6 +57,18 @@
 <dd class="field-odd"><p></p></dd>
 </dl>
 </div></blockquote>
+<p>Generation Node Input Constructors
+.. automodule:: ax.modelbridge.generation_node_input_constructors</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">members<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">undoc-members<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">show-inheritance<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</div></blockquote>
 </section>
 <section id="module-ax.modelbridge.registry">
 <span id="registry"></span><h3>Registry<a class="headerlink" href="#module-ax.modelbridge.registry" title="Link to this heading">¶</a></h3>
@@ -165,7 +177,7 @@ such as BoTorch GP+EI, a Thompson sampler, or a Sobol quasirandom generator.</p>
 by the key stored in the enum value.</p>
 <p>To instantiate a model in this enum, simply call an enum member like so:
 <cite>Models.SOBOL(search_space=search_space)</cite> or
-<cite>Models.GPEI(experiment=experiment, data=data)</cite>. Keyword arguments
+<cite>Models.BOTORCH(experiment=experiment, data=data)</cite>. Keyword arguments
 specified to the call will be passed into the model or the model bridge
 constructors according to their keyword.</p>
 <p>For instance, <cite>Models.SOBOL(search_space=search_space, scramble=False)</cite>
@@ -204,7 +216,7 @@ with a <cite>SobolGenerator(scramble=False)</cite> underlying model.</p>
 by the key stored in the enum value.</p>
 <p>To instantiate a model in this enum, simply call an enum member like so:
 <cite>Models.SOBOL(search_space=search_space)</cite> or
-<cite>Models.GPEI(experiment=experiment, data=data)</cite>. Keyword arguments
+<cite>Models.BOTORCH(experiment=experiment, data=data)</cite>. Keyword arguments
 specified to the call will be passed into the model or the model bridge
 constructors according to their keyword.</p>
 <p>For instance, <cite>Models.SOBOL(search_space=search_space, scramble=False)</cite>
@@ -220,7 +232,7 @@ with a <cite>SobolGenerator(scramble=False)</cite> underlying model.</p>
 by the key stored in the enum value.</p>
 <p>To instantiate a model in this enum, simply call an enum member like so:
 <cite>Models.SOBOL(search_space=search_space)</cite> or
-<cite>Models.GPEI(experiment=experiment, data=data)</cite>. Keyword arguments
+<cite>Models.BOTORCH(experiment=experiment, data=data)</cite>. Keyword arguments
 specified to the call will be passed into the model or the model bridge
 constructors according to their keyword.</p>
 <p>For instance, <cite>Models.SOBOL(search_space=search_space, scramble=False)</cite>
@@ -236,7 +248,7 @@ with a <cite>SobolGenerator(scramble=False)</cite> underlying model.</p>
 by the key stored in the enum value.</p>
 <p>To instantiate a model in this enum, simply call an enum member like so:
 <cite>Models.SOBOL(search_space=search_space)</cite> or
-<cite>Models.GPEI(experiment=experiment, data=data)</cite>. Keyword arguments
+<cite>Models.BOTORCH(experiment=experiment, data=data)</cite>. Keyword arguments
 specified to the call will be passed into the model or the model bridge
 constructors according to their keyword.</p>
 <p>For instance, <cite>Models.SOBOL(search_space=search_space, scramble=False)</cite>
@@ -252,7 +264,7 @@ with a <cite>SobolGenerator(scramble=False)</cite> underlying model.</p>
 by the key stored in the enum value.</p>
 <p>To instantiate a model in this enum, simply call an enum member like so:
 <cite>Models.SOBOL(search_space=search_space)</cite> or
-<cite>Models.GPEI(experiment=experiment, data=data)</cite>. Keyword arguments
+<cite>Models.BOTORCH(experiment=experiment, data=data)</cite>. Keyword arguments
 specified to the call will be passed into the model or the model bridge
 constructors according to their keyword.</p>
 <p>For instance, <cite>Models.SOBOL(search_space=search_space, scramble=False)</cite>
@@ -2717,6 +2729,55 @@ transform (does nothing).</p>
 </dd></dl>
 
 </section>
+<section id="ax-modelbridge-transforms-transform-to-new-sq">
+<h3><cite>ax.modelbridge.transforms.transform_to_new_sq</cite><a class="headerlink" href="#ax-modelbridge-transforms-transform-to-new-sq" title="Link to this heading">¶</a></h3>
+<dl class="py class" id="module-ax.modelbridge.transforms.transform_to_new_sq">
+<dt class="sig sig-object py" id="ax.modelbridge.transforms.transform_to_new_sq.TransformToNewSQ">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ax.modelbridge.transforms.transform_to_new_sq.</span></span><span class="sig-name descname"><span class="pre">TransformToNewSQ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SearchSpace</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../core/#ax.core.observation.Observation" title="ax.core.observation.Observation"><span class="pre">Observation</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modelbridge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">modelbridge_module.base.ModelBridge</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TConfig</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ax/modelbridge/transforms/transform_to_new_sq/#TransformToNewSQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ax.modelbridge.transforms.transform_to_new_sq.TransformToNewSQ" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ax.modelbridge.transforms.relativize.BaseRelativize" title="ax.modelbridge.transforms.relativize.BaseRelativize"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRelativize</span></code></a></p>
+<p>Map relative values of one batch to SQ of another.</p>
+<p>Will compute the relative metrics for each arm in each batch, and will then turn
+those back into raw metrics but using the status quo values set on the Modelbridge.</p>
+<p>This is useful if batches are comparable on a relative scale, but
+have offset in their status quo. This is often approximately true for online
+experiments run in separate batches.</p>
+<p>Note that relativization is done using the delta method, so it will not
+simply be the ratio of the means.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="ax.modelbridge.transforms.transform_to_new_sq.TransformToNewSQ.control_as_constant">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">control_as_constant</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#ax.modelbridge.transforms.transform_to_new_sq.TransformToNewSQ.control_as_constant" title="Link to this definition">¶</a></dt>
+<dd><p>Whether or not the control is treated as a constant in the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ax.modelbridge.transforms.transform_to_new_sq.TransformToNewSQ.transform_optimization_config">
+<span class="sig-name descname"><span class="pre">transform_optimization_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">optimization_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../core/#ax.core.optimization_config.OptimizationConfig" title="ax.core.optimization_config.OptimizationConfig"><span class="pre">OptimizationConfig</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">modelbridge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">modelbridge_module.base.ModelBridge</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../core/#ax.core.observation.ObservationFeatures" title="ax.core.observation.ObservationFeatures"><span class="pre">ObservationFeatures</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../core/#ax.core.optimization_config.OptimizationConfig" title="ax.core.optimization_config.OptimizationConfig"><span class="pre">OptimizationConfig</span></a></span></span><a class="reference internal" href="../_modules/ax/modelbridge/transforms/transform_to_new_sq/#TransformToNewSQ.transform_optimization_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ax.modelbridge.transforms.transform_to_new_sq.TransformToNewSQ.transform_optimization_config" title="Link to this definition">¶</a></dt>
+<dd><p>Change the relative flag of the given relative optimization configuration
+to False. This is needed in order for the new opt config to pass ModelBridge
+that requires non-relativized opt config.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>opt_config</strong> – Optimization configuration relative to status quo.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Optimization configuration relative to status quo with relative flag
+equal to false.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ax.modelbridge.transforms.transform_to_new_sq.TransformToNewSQ.untransform_outcome_constraints">
+<span class="sig-name descname"><span class="pre">untransform_outcome_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outcome_constraints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">OutcomeConstraint</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../core/#ax.core.observation.ObservationFeatures" title="ax.core.observation.ObservationFeatures"><span class="pre">ObservationFeatures</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">OutcomeConstraint</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ax/modelbridge/transforms/transform_to_new_sq/#TransformToNewSQ.untransform_outcome_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ax.modelbridge.transforms.transform_to_new_sq.TransformToNewSQ.untransform_outcome_constraints" title="Link to this definition">¶</a></dt>
+<dd><p>Untransform outcome constraints.</p>
+<p>If outcome constraints are modified in transform_optimization_config,
+this method should reverse the portion of that transformation that was
+applied to the outcome constraints.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-ax.modelbridge.transforms.trial_as_task">
 <span id="ax-modelbridge-transforms-trial-as-task"></span><h3><cite>ax.modelbridge.transforms.trial_as_task</cite><a class="headerlink" href="#module-ax.modelbridge.transforms.trial_as_task" title="Link to this heading">¶</a></h3>
 <dl class="py class">
@@ -2965,11 +3026,6 @@ that requires non-relativized opt config.</p>
 <p>Abstract property control_as_constant is set to True/False in its subclasses
 Relativize and RelativizeWithConstantControl respectively to account for
 appropriate transform/untransform differently.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ax.modelbridge.transforms.relativize.BaseRelativize.MISSING_STATUS_QUO_ERROR">
-<span class="sig-name descname"><span class="pre">MISSING_STATUS_QUO_ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Cannot</span> <span class="pre">relativize</span> <span class="pre">data</span> <span class="pre">without</span> <span class="pre">status</span> <span class="pre">quo</span> <span class="pre">data'</span></em><a class="headerlink" href="#ax.modelbridge.transforms.relativize.BaseRelativize.MISSING_STATUS_QUO_ERROR" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="ax.modelbridge.transforms.relativize.BaseRelativize.control_as_constant">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">control_as_constant</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#ax.modelbridge.transforms.relativize.BaseRelativize.control_as_constant" title="Link to this definition">¶</a></dt>
@@ -3052,6 +3108,12 @@ and untransforming the data.</p>
 <dd><p>Whether or not the control is treated as a constant in the model.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ax.modelbridge.transforms.relativize.get_metric_index">
+<span class="sig-prename descclassname"><span class="pre">ax.modelbridge.transforms.relativize.</span></span><span class="sig-name descname"><span class="pre">get_metric_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../core/#ax.core.observation.ObservationData" title="ax.core.observation.ObservationData"><span class="pre">ObservationData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../_modules/ax/modelbridge/transforms/relativize/#get_metric_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ax.modelbridge.transforms.relativize.get_metric_index" title="Link to this definition">¶</a></dt>
+<dd><p>Get the index of a metric in the ObservationData.</p>
 </dd></dl>
 
 </section>

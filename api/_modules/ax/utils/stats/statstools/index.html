@@ -470,7 +470,9 @@
     <span class="k">for</span> <span class="n">grp</span> <span class="ow">in</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="n">subgroup_df</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="n">grp</span><span class="p">)</span>
         <span class="n">is_sq</span> <span class="o">=</span> <span class="n">subgroup_df</span><span class="p">[</span><span class="s2">&quot;arm_name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">status_quo_name</span>
-        <span class="n">sq_mean</span><span class="p">,</span> <span class="n">sq_sem</span> <span class="o">=</span> <span class="n">subgroup_df</span><span class="p">[</span><span class="n">is_sq</span><span class="p">][[</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;sem&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">sq_mean</span><span class="p">,</span> <span class="n">sq_sem</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">subgroup_df</span><span class="p">[</span><span class="n">is_sq</span><span class="p">][[</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;sem&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="p">)</span>
 
         <span class="c1"># rm status quo from final df to relativize</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">include_sq</span><span class="p">:</span>

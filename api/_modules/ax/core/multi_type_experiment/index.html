@@ -40,10 +40,10 @@
 <span class="c1"># pyre-strict</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
 
 <span class="kn">from</span> <span class="nn">ax.core.arm</span> <span class="kn">import</span> <span class="n">Arm</span>
-<span class="kn">from</span> <span class="nn">ax.core.base_trial</span> <span class="kn">import</span> <span class="n">BaseTrial</span>
+<span class="kn">from</span> <span class="nn">ax.core.base_trial</span> <span class="kn">import</span> <span class="n">BaseTrial</span><span class="p">,</span> <span class="n">TrialStatus</span>
 <span class="kn">from</span> <span class="nn">ax.core.data</span> <span class="kn">import</span> <span class="n">Data</span>
 <span class="kn">from</span> <span class="nn">ax.core.experiment</span> <span class="kn">import</span> <span class="n">DataType</span><span class="p">,</span> <span class="n">Experiment</span>
 <span class="kn">from</span> <span class="nn">ax.core.metric</span> <span class="kn">import</span> <span class="n">Metric</span><span class="p">,</span> <span class="n">MetricFetchResult</span>
@@ -52,6 +52,7 @@
 <span class="kn">from</span> <span class="nn">ax.core.search_space</span> <span class="kn">import</span> <span class="n">SearchSpace</span>
 <span class="kn">from</span> <span class="nn">ax.utils.common.docutils</span> <span class="kn">import</span> <span class="n">copy_doc</span>
 <span class="kn">from</span> <span class="nn">ax.utils.common.logger</span> <span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span> <span class="nn">pyre_extensions</span> <span class="kn">import</span> <span class="n">none_throws</span>
 
 
 <span class="n">logger</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -152,6 +153,19 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
+    <span class="c1"># pyre-fixme [56]: Pyre was not able to infer the type of the decorator</span>
+    <span class="c1"># `Experiment.optimization_config.setter`.</span>
+    <span class="nd">@Experiment</span><span class="o">.</span><span class="n">optimization_config</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">optimization_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optimization_config</span><span class="p">:</span> <span class="n">OptimizationConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># pyre-fixme [16]: `Optional` has no attribute `fset`.</span>
+        <span class="n">Experiment</span><span class="o">.</span><span class="n">optimization_config</span><span class="o">.</span><span class="n">fset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optimization_config</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">metric_name</span> <span class="ow">in</span> <span class="n">optimization_config</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c1"># Optimization config metrics are required to be the default trial type</span>
+            <span class="c1"># currently. TODO: remove that restriction (T202797235)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_metric_to_trial_type</span><span class="p">[</span><span class="n">metric_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">none_throws</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">default_trial_type</span>
+            <span class="p">)</span>
+
 <div class="viewcode-block" id="MultiTypeExperiment.update_runner">
 <a class="viewcode-back" href="../../../../core/#ax.core.multi_type_experiment.MultiTypeExperiment.update_runner">[docs]</a>
     <span class="k">def</span> <span class="nf">update_runner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trial_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">runner</span><span class="p">:</span> <span class="n">Runner</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;MultiTypeExperiment&quot;</span><span class="p">:</span>
@@ -250,6 +264,9 @@
         <span class="n">overwrite_existing_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Data</span><span class="p">:</span>
+        <span class="c1"># TODO: make this more efficient for fetching</span>
+        <span class="c1"># data for multiple trials of the same type</span>
+        <span class="c1"># by overriding Experiment._lookup_or_fetch_trials_results</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_data_constructor</span><span class="o">.</span><span class="n">from_multiple_data</span><span class="p">(</span>
             <span class="p">[</span>
                 <span class="p">(</span>
@@ -292,7 +309,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">opt_config_types</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">metric_name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_trial_type</span>
-            <span class="c1"># pyre-fixme[16]: `Optional` has no attribute `metrics`.</span>
             <span class="k">for</span> <span class="n">metric_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_config</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">opt_config_types</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_metric_to_trial_type</span><span class="p">}</span>
@@ -310,9 +326,19 @@
 
 <span class="sd">        Looks up the appropriate runner for this trial type in the trial_type_to_runner.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">trial</span><span class="o">.</span><span class="n">trial_type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports_trial_type</span><span class="p">(</span><span class="n">trial</span><span class="o">.</span><span class="n">trial_type</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Batch type `</span><span class="si">{</span><span class="n">trial</span><span class="o">.</span><span class="n">trial_type</span><span class="si">}</span><span class="s2">` is not supported.&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trial_type_to_runner</span><span class="p">[</span><span class="n">trial</span><span class="o">.</span><span class="n">trial_type</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">runner_for_trial_type</span><span class="p">(</span><span class="n">trial_type</span><span class="o">=</span><span class="n">none_throws</span><span class="p">(</span><span class="n">trial</span><span class="o">.</span><span class="n">trial_type</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="MultiTypeExperiment.runner_for_trial_type">
+<a class="viewcode-back" href="../../../../core/#ax.core.multi_type_experiment.MultiTypeExperiment.runner_for_trial_type">[docs]</a>
+    <span class="k">def</span> <span class="nf">runner_for_trial_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trial_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Runner</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The default runner to use for a given trial type.</span>
+
+<span class="sd">        Looks up the appropriate runner for this trial type in the trial_type_to_runner.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports_trial_type</span><span class="p">(</span><span class="n">trial_type</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Trial type `</span><span class="si">{</span><span class="n">trial_type</span><span class="si">}</span><span class="s2">` is not supported.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trial_type_to_runner</span><span class="p">[</span><span class="n">trial_type</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="MultiTypeExperiment.supports_trial_type">
@@ -332,6 +358,53 @@
             <span class="s2">&quot;MultiTypeExperiment does not support resetting all runners.&quot;</span>
         <span class="p">)</span></div>
 </div>
+
+
+
+<div class="viewcode-block" id="filter_trials_by_type">
+<a class="viewcode-back" href="../../../../core/#ax.core.multi_type_experiment.filter_trials_by_type">[docs]</a>
+<span class="k">def</span> <span class="nf">filter_trials_by_type</span><span class="p">(</span>
+    <span class="n">trials</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">BaseTrial</span><span class="p">],</span> <span class="n">trial_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseTrial</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Filter trials by trial type if provided.</span>
+
+<span class="sd">    This filters trials by trial type if the experiment is a</span>
+<span class="sd">    MultiTypeExperiment.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        trials: Trials to filter.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Filtered trials.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">trial_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">trials</span> <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">trial_type</span> <span class="o">==</span> <span class="n">trial_type</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">trials</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_trial_indices_for_statuses">
+<a class="viewcode-back" href="../../../../core/#ax.core.multi_type_experiment.get_trial_indices_for_statuses">[docs]</a>
+<span class="k">def</span> <span class="nf">get_trial_indices_for_statuses</span><span class="p">(</span>
+    <span class="n">experiment</span><span class="p">:</span> <span class="n">Experiment</span><span class="p">,</span> <span class="n">statuses</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">TrialStatus</span><span class="p">],</span> <span class="n">trial_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get trial indices for a set of statuses.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        statuses: Set of statuses to get trial indices for.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Set of trial indices for the given statuses.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="n">i</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">experiment</span><span class="o">.</span><span class="n">trials</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">status</span> <span class="ow">in</span> <span class="n">statuses</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">trial_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">((</span><span class="n">trial_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">trial_type</span> <span class="o">==</span> <span class="n">trial_type</span><span class="p">))</span>
+        <span class="p">)</span>
+    <span class="p">}</span></div>
 
 </pre></div>
 
