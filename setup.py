@@ -43,6 +43,7 @@ DEV_REQUIRES = [
     "sphinx",
     "sphinx-autodoc-typehints",
     "sphinx_rtd_theme>=2.0.0",
+    "sphinx-markdown-builder",
     "torchvision>=0.5.0",
     "nbconvert",
     "jupyter-client==6.1.12",
