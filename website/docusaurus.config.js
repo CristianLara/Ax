@@ -22,6 +22,9 @@ module.exports={
   },
   "onBrokenLinks": "log",
   "onBrokenMarkdownLinks": "log",
+  "markdown": {
+    "format": "detect",
+  },
   "presets": [
     [
       "@docusaurus/preset-classic",

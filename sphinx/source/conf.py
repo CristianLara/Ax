@@ -43,6 +43,7 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.viewcode",
     "sphinx_rtd_theme",
+    "sphinx_markdown_builder",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
