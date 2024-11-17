@@ -8,11 +8,11 @@
     <subtitle>Ax Blog</subtitle>
     <icon>http://cristianlara.me/Ax/img/favicon.png</icon>
     <entry>
-        <title type="html"><![CDATA[Welcome Ax]]></title>
-        <id>http://cristianlara.me/Ax/blog/2024/10/03/hello-ax</id>
-        <link href="http://cristianlara.me/Ax/blog/2024/10/03/hello-ax"/>
+        <title type="html"><![CDATA[Another blog post!]]></title>
+        <id>http://cristianlara.me/Ax/blog/2024/10/03/hello-ax-v2</id>
+        <link href="http://cristianlara.me/Ax/blog/2024/10/03/hello-ax-v2"/>
         <updated>2024-10-03T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[This is my first post on Ax.]]></summary>
+        <summary type="html"><![CDATA[This is my second post on Ax.]]></summary>
         <content type="html"><![CDATA[<p>Welcome to this blog. This blog is created with <a href="https://docusaurus.io/" target="_blank" rel="noopener noreferrer"><strong>Docusaurus 3</strong></a>.</p>
 <p>This is my first post on Docusaurus 2.</p>
 <p>A whole bunch of exploration to follow.</p>]]></content>
@@ -24,11 +24,11 @@
         <category label="docusaurus-v3" term="docusaurus-v3"/>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Another blog post!]]></title>
-        <id>http://cristianlara.me/Ax/blog/2024/10/03/hello-ax-v2</id>
-        <link href="http://cristianlara.me/Ax/blog/2024/10/03/hello-ax-v2"/>
+        <title type="html"><![CDATA[Welcome Ax]]></title>
+        <id>http://cristianlara.me/Ax/blog/2024/10/03/hello-ax</id>
+        <link href="http://cristianlara.me/Ax/blog/2024/10/03/hello-ax"/>
         <updated>2024-10-03T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[This is my second post on Ax.]]></summary>
+        <summary type="html"><![CDATA[This is my first post on Ax.]]></summary>
         <content type="html"><![CDATA[<p>Welcome to this blog. This blog is created with <a href="https://docusaurus.io/" target="_blank" rel="noopener noreferrer"><strong>Docusaurus 3</strong></a>.</p>
 <p>This is my first post on Docusaurus 2.</p>
 <p>A whole bunch of exploration to follow.</p>]]></content>
