@@ -15,5 +15,6 @@ jobs:
         cd website
         yarn
         yarn docusaurus docs:version 0.9.9
+        git ls-files --others --exclude-standard
         git add --all
         git status
