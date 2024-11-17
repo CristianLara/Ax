@@ -1,0 +1,19 @@
+name: Test Docusaurus
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  create-docusaurus-version:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Create new version in Docusaurus
+      run: |
+        cd website
+        yarn
+        yarn docusaurus docs:version 0.9.9
+        git add --all
+        git status
