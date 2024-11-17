@@ -9,11 +9,11 @@
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
         <item>
-            <title><![CDATA[Another blog post!]]></title>
-            <link>http://cristianlara.me/Ax/blog/2024/10/03/hello-ax-v2</link>
-            <guid>http://cristianlara.me/Ax/blog/2024/10/03/hello-ax-v2</guid>
+            <title><![CDATA[Welcome Ax]]></title>
+            <link>http://cristianlara.me/Ax/blog/2024/10/03/hello-ax</link>
+            <guid>http://cristianlara.me/Ax/blog/2024/10/03/hello-ax</guid>
             <pubDate>Thu, 03 Oct 2024 00:00:00 GMT</pubDate>
-            <description><![CDATA[This is my second post on Ax.]]></description>
+            <description><![CDATA[This is my first post on Ax.]]></description>
             <content:encoded><![CDATA[<p>Welcome to this blog. This blog is created with <a href="https://docusaurus.io/" target="_blank" rel="noopener noreferrer"><strong>Docusaurus 3</strong></a>.</p>
 <p>This is my first post on Docusaurus 2.</p>
 <p>A whole bunch of exploration to follow.</p>]]></content:encoded>
@@ -21,11 +21,11 @@
             <category>docusaurus-v3</category>
         </item>
         <item>
-            <title><![CDATA[Welcome Ax]]></title>
-            <link>http://cristianlara.me/Ax/blog/2024/10/03/hello-ax</link>
-            <guid>http://cristianlara.me/Ax/blog/2024/10/03/hello-ax</guid>
+            <title><![CDATA[Another blog post!]]></title>
+            <link>http://cristianlara.me/Ax/blog/2024/10/03/hello-ax-v2</link>
+            <guid>http://cristianlara.me/Ax/blog/2024/10/03/hello-ax-v2</guid>
             <pubDate>Thu, 03 Oct 2024 00:00:00 GMT</pubDate>
-            <description><![CDATA[This is my first post on Ax.]]></description>
+            <description><![CDATA[This is my second post on Ax.]]></description>
             <content:encoded><![CDATA[<p>Welcome to this blog. This blog is created with <a href="https://docusaurus.io/" target="_blank" rel="noopener noreferrer"><strong>Docusaurus 3</strong></a>.</p>
 <p>This is my first post on Docusaurus 2.</p>
 <p>A whole bunch of exploration to follow.</p>]]></content:encoded>
