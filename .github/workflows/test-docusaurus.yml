@@ -17,5 +17,4 @@ jobs:
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git add --all
         git commit -m "test change to README.md"
-        # TODO: Temporarily changed while making changes on fork. Revert before merging back into facebook/Ax
-        git push origin HEAD:$GITHUB_HEAD_REF
+        git push --force origin HEAD:$GITHUB_HEAD_REF
