@@ -31,6 +31,7 @@ jobs:
     needs: make-commit
     name: Checkout latest commit
     uses: ./.github/workflows/test-checkout-specific-commit.yml
-    with:
-      ref: ${{ needs.make-commit.outputs.new-commit-sha }}
+    # verify that the called workflow falls back to the default github.ref when one is not explicitly provided
+    # with:
+    #   ref: ${{ needs.make-commit.outputs.new-commit-sha }}
     secrets: inherit
