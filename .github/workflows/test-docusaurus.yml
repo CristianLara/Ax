@@ -8,9 +8,12 @@ on:
 jobs:
   make-commit:
     runs-on: ubuntu-latest
+    outputs:
+      new-commit-sha: ${{ steps.make-commit.outputs.NEW_COMMIT_SHA }}
     steps:
     - uses: actions/checkout@v4
     - name: make test commit
+      id: make-commit
       run: |
         git rev-parse HEAD
         git log | head -n 5
@@ -22,12 +25,12 @@ jobs:
         git push --force origin HEAD:$GITHUB_HEAD_REF
         git rev-parse HEAD
         git log | head -n 5
-        echo "GH_COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
+        echo "NEW_COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
   checkout-latest-commit:
     needs: make-commit
     name: Checkout latest commit
     uses: ./.github/workflows/test-checkout-specific-commit.yml
     with:
-      ref: ${{ env.GH_COMMIT_SHA }}
+      ref: ${{ needs.make-commit.new-commit-sha }}
     secrets: inherit
