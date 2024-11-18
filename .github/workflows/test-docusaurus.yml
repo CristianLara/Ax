@@ -32,5 +32,5 @@ jobs:
     name: Checkout latest commit
     uses: ./.github/workflows/test-checkout-specific-commit.yml
     with:
-      ref: ${{ needs.make-commit.new-commit-sha }}
+      ref: ${{ needs.make-commit.outputs.new-commit-sha }}
     secrets: inherit
