@@ -6,7 +6,6 @@ on:
       ref:
         required: false
         type: string
-        default: ${{ github.ref }}
 
 jobs:
   checkout-commit:
@@ -14,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        ref: ${{ inputs.ref }}
+          ref: ${{ inputs.ref || github.ref }}
     - name: Checkout ref
       run: |
         git rev-parse HEAD
