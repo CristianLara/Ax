@@ -18,4 +18,4 @@ jobs:
         git add --all
         git commit -m "test change to README.md"
         # TODO: Temporarily changed while making changes on fork. Revert before merging back into facebook/Ax
-        git push
+        git push origin HEAD:$GITHUB_HEAD_REF
