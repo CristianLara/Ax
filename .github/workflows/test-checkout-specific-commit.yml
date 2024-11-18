@@ -1,0 +1,21 @@
+name: Checkout commit
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        required: false
+        type: string
+        default: ${{ github.ref }}
+
+jobs:
+  checkout-commit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.ref }}
+    - name: Checkout ref
+      run: |
+        git rev-parse HEAD
+        git log | head -n 5
