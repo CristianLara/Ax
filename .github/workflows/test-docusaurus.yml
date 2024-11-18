@@ -27,7 +27,7 @@ jobs:
   checkout-latest-commit:
     needs: make-commit
     name: Checkout latest commit
-    uses: ./.github/workflows/test-checkout-specific-commit.yml.yml
+    uses: ./.github/workflows/test-checkout-specific-commit.yml
     with:
       ref: ${{ env.GH_COMMIT_SHA }}
     secrets: inherit
