@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1],{80502:a=>{a.exports=JSON.parse('{"authors":[{"name":"Cristian Lara","title":"Engineering @ Meta","url":"https://github.com/CristianLara","socials":{"github":"https://github.com/CristianLara"},"imageURL":"https://github.com/CristianLara.png","key":"cristianlara","page":null,"count":2}]}')}}]);
