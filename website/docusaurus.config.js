@@ -69,15 +69,32 @@ module.exports={
       },
       "items": [
         {
-          "type": "docSidebar",
-          "sidebarId": "docs",
-          "label": "Docs",
-          "position": "left"
+          type: 'dropdown',
+          label: 'Docs',
+          position: 'left',
+          items: [
+            {
+              "type": "docSidebar",
+              "sidebarId": "docs",
+              "label": "Docs (new)",
+            },
+            {
+              "type": "docSidebar",
+              "sidebarId": "docs_old",
+              "label": "Docs (old)",
+            },
+          ],
         },
         {
           "type": "docSidebar",
           "sidebarId": "tutorials",
           "label": "Tutorials",
+          "position": "left"
+        },
+        {
+          "type": "docSidebar",
+          "sidebarId": "recipes",
+          "label": "Recipes",
           "position": "left"
         },
         {
