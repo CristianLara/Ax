@@ -9,7 +9,7 @@ import {BokehFigure, PlotlyFigure} from "@site/src/components/Plotting.jsx";
 
 <LinkButtons
   githubUrl="https://github.com/cristianlara/Ax/blob/main/tutorials/saasbo_nehvi.ipynb"
-  colabUrl="https://colab.research.google.com/github/cristianlara/Ax/blob/main/tutorials/saasbo_nehvi.ipynb"
+  colabUrl="https://colab.research.google.com/github/cristianlara/Ax/blob/main/tutorials/saasbo_nehvi/saasbo_nehvi.ipynb"
 />
 
 # Fully Bayesian Multi-Objective Optimization using qNEHVI + SAASBO
@@ -42,8 +42,8 @@ $\mathcal X$ the set of possible configuration spaces
 
 Previous work, has shown that using a fully Bayesian treatment of GP model
 hyperparameters $\boldsymbol \theta$ can lead to improved closed loop Bayesian
-optimization performance [1]. Snoek et al [1] propose to use an integrated acquisition
-function $\alpha_{MCMC}$ where the base acquisition function
+optimization performance \[1\]. Snoek et al \[1\] propose to use an integrated
+acquisition function $\alpha_{MCMC}$ where the base acquisition function
 $\alpha(\mathbf{x} | \boldsymbol \theta, \mathcal D)$ is integrated over the the
 posterior distribution over the hyperparameters
 $p({\boldsymbol{\theta}} | \mathcal{D})$, where
@@ -56,31 +56,31 @@ closed-form, Markov Chain Monte-Carlo (MCMC) methods are used to draw samples fr
 $p({\boldsymbol{\theta}} | \mathcal{D})$. In this tutorial we use the NUTS sampler from
 the pyro package for automatic, robust fully Bayesian inference.
 
-[1] J. Snoek, H. Larochelle, R. P. Adams, Practical Bayesian Optimization of Machine
+\[1\] J. Snoek, H. Larochelle, R. P. Adams, Practical Bayesian Optimization of Machine
 Learning Algorithms. Advances in Neural Information Processing Systems 26, 2012.
 
 ### SAAS Priors (SAASBO)
 
-Recently Eriksson et al [2] propose using sparse axis-aligned subspace priors for
+Recently Eriksson et al \[2\] propose using sparse axis-aligned subspace priors for
 Bayesian optimization over high-dimensional search spaces. Specifically, the authors
 propose using a hierarchical sparsity prior consisting of a global shrinkage parameter
 with a Half-Cauchy prior $\tau \sim \mathcal{HC}(\beta)$, and ARD lengthscales
-$\rho_d \sim \mathcal{HC}(\tau)$ for $d=1, ..., D$. See [2] for details.
+$\rho_d \sim \mathcal{HC}(\tau)$ for $d=1, ..., D$. See \[2\] for details.
 
-[2] D. Eriksson, M. Jankowiak. High-Dimensional Bayesian Optimization with Sparse
+\[2\] D. Eriksson, M. Jankowiak. High-Dimensional Bayesian Optimization with Sparse
 Axis-Aligned Subspaces. Proceedings of the Thirty-Seventh Conference on Uncertainty in
 Artificial Intelligence, 2021.
 
 ### qNEHVI
 
-In this tutorial, we use qNEHVI [3] as our acquisition function for multi-objective
+In this tutorial, we use qNEHVI \[3\] as our acquisition function for multi-objective
 optimization. We integrate qNEHVI over the posterior distribution of the GP
-hyperparameters as proposed in [4].
+hyperparameters as proposed in \[4\].
 
-[3] S. Daulton, M. Balandat, E. Bakshy. Parallel Bayesian Optimization of Multiple Noisy
-Objectives with Expected Hypervolume Improvement. Arxiv, 2021.
+\[3\] S. Daulton, M. Balandat, E. Bakshy. Parallel Bayesian Optimization of Multiple
+Noisy Objectives with Expected Hypervolume Improvement. Arxiv, 2021.
 
-[4] D. Eriksson, P. Chuang, S. Daulton, P. Xia, A. Shrivastava, A. Babu, S. Zhao, A.
+\[4\] D. Eriksson, P. Chuang, S. Daulton, P. Xia, A. Shrivastava, A. Babu, S. Zhao, A.
 Aly, G. Venkatesh, M. Balandat. Latency-Aware Neural Architecture Search with
 Multi-Objective Bayesian Optimization. ICML AutoML Workshop, 2021.
 
@@ -566,7 +566,7 @@ cv = cross_validate(model)
 render(tile_cross_validation(cv))
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/dc3ff4a3-17d0-464c-ab7b-a1a79e19b648.json')} />
+<PlotlyFigure data={require('./assets/plot_data/7615c96d-5bad-4615-b232-c2d7f05b7b50.json')} />
 
 ```python
 # compute  out-of-sample log likelihood
@@ -596,7 +596,7 @@ map_cv = cross_validate(map_model)
 render(tile_cross_validation(map_cv))
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/89f582bc-6278-4f6e-a606-a7d6b63c6611.json')} />
+<PlotlyFigure data={require('./assets/plot_data/6e1e9116-3195-4dac-b47c-4086614f2834.json')} />
 
 ```python
 # compute out-of-sample log likelihood

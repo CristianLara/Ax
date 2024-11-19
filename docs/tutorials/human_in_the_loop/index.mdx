@@ -9,7 +9,7 @@ import {BokehFigure, PlotlyFigure} from "@site/src/components/Plotting.jsx";
 
 <LinkButtons
   githubUrl="https://github.com/cristianlara/Ax/blob/main/tutorials/human_in_the_loop.ipynb"
-  colabUrl="https://colab.research.google.com/github/cristianlara/Ax/blob/main/tutorials/human_in_the_loop.ipynb"
+  colabUrl="https://colab.research.google.com/github/cristianlara/Ax/blob/main/tutorials/human_in_the_loop/human_in_the_loop.ipynb"
 />
 
 # Using Ax for Human-in-the-loop Experimentation¶
@@ -321,7 +321,7 @@ cv_result = cross_validate(gp)
 render(tile_cross_validation(cv_result))
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/6b38afe4-4441-4b23-8029-88d935f64c8b.json')} />
+<PlotlyFigure data={require('./assets/plot_data/53c959bd-3ad6-41ec-b5eb-7c1ae26dc909.json')} />
 
 The parameters from the initial batch have a wide range of effects on the metrics of
 interest, as shown from the outcomes from our fitted GP model.
@@ -330,7 +330,7 @@ interest, as shown from the outcomes from our fitted GP model.
 render(tile_fitted(gp, rel=True))
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/2ff58820-d638-45bd-b8b6-6c6e89439fea.json')} />
+<PlotlyFigure data={require('./assets/plot_data/b9c6b0e5-5c6f-4c4d-b51d-20e608304c58.json')} />
 
 ```python
 METRIC_X_AXIS = "metric_1"
@@ -345,7 +345,7 @@ render(
 )
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/10c08376-03c5-4f0f-8fc6-0f4d85a04489.json')} />
+<PlotlyFigure data={require('./assets/plot_data/e7d460bd-5348-435f-85af-6f36c0eccc68.json')} />
 
 ### Candidate Generation
 
@@ -378,7 +378,7 @@ render(
 )
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/7420dfc0-5671-476b-bbd9-a94685d1acd7.json')} />
+<PlotlyFigure data={require('./assets/plot_data/f78a796e-8392-4de0-b2bd-9c36c56b8141.json')} />
 
 ### Change Objectives
 
@@ -414,7 +414,7 @@ render(
 )
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/93983d18-8ad3-43df-9841-0ea93b00dce7.json')} />
+<PlotlyFigure data={require('./assets/plot_data/95427254-9121-4260-afb6-d372261ca649.json')} />
 
 It is important to note that the treatment of constraints in GP EI is probabilistic. The
 acquisition function weights our objective by the probability that each constraint is
@@ -450,7 +450,7 @@ render(
 )
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/03361071-88e9-4645-9928-2a19f9e0307e.json')} />
+<PlotlyFigure data={require('./assets/plot_data/a2889c1a-ce88-4e82-924f-0803fc8acd5d.json')} />
 
 Finally, let's view all three sets of candidates together.
 
@@ -469,7 +469,7 @@ render(
 )
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/9cca3a52-8fd2-4a45-9bff-2defd003f96c.json')} />
+<PlotlyFigure data={require('./assets/plot_data/003c1c98-ed02-4044-adbe-fac459ae03a7.json')} />
 
 ## Creating a New Trial
 

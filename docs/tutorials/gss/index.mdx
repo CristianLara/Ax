@@ -9,7 +9,7 @@ import {BokehFigure, PlotlyFigure} from "@site/src/components/Plotting.jsx";
 
 <LinkButtons
   githubUrl="https://github.com/cristianlara/Ax/blob/main/tutorials/gss.ipynb"
-  colabUrl="https://colab.research.google.com/github/cristianlara/Ax/blob/main/tutorials/gss.ipynb"
+  colabUrl="https://colab.research.google.com/github/cristianlara/Ax/blob/main/tutorials/gss/gss.ipynb"
 />
 
 This tutorial illustrates use of a Global Stopping Strategy (GSS) in combination with
@@ -186,7 +186,7 @@ Wall time: 14.4 s`
 render(ax_client.get_optimization_trace())
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/595c1da9-29d1-4e83-aa28-c3f45b3c57a5.json')} />
+<PlotlyFigure data={require('./assets/plot_data/d0185fcd-d1db-4b30-8fc9-b2aed98a5794.json')} />
 
 # 2. Optimization with global stopping, with the Service API
 
@@ -331,7 +331,7 @@ Encountered exception in computing model fit quality: RandomModelBridge does not
 render(ax_client_gss.get_optimization_trace())
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/438131d2-ea22-493b-a038-0f3a51a444ed.json')} />
+<PlotlyFigure data={require('./assets/plot_data/c15f6d8e-800e-4da3-848d-44770737693b.json')} />
 
 # 3. Write your own custom Global Stopping Strategy
 
@@ -527,7 +527,7 @@ Encountered exception in computing model fit quality: RandomModelBridge does not
 render(ax_client_custom_gss.get_optimization_trace())
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/7a6be832-8350-47ad-9e42-e2c7ea803fd2.json')} />
+<PlotlyFigure data={require('./assets/plot_data/bcb01899-0b01-4ad5-8e02-193fa7f60dd2.json')} />
 
 ```python
 

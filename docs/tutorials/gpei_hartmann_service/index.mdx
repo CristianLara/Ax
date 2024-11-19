@@ -9,7 +9,7 @@ import {BokehFigure, PlotlyFigure} from "@site/src/components/Plotting.jsx";
 
 <LinkButtons
   githubUrl="https://github.com/cristianlara/Ax/blob/main/tutorials/gpei_hartmann_service.ipynb"
-  colabUrl="https://colab.research.google.com/github/cristianlara/Ax/blob/main/tutorials/gpei_hartmann_service.ipynb"
+  colabUrl="https://colab.research.google.com/github/cristianlara/Ax/blob/main/tutorials/gpei_hartmann_service/gpei_hartmann_service.ipynb"
 />
 
 # Service API Example on Hartmann6
@@ -753,7 +753,7 @@ render(ax_client.get_contour_plot())
 </CellOutput>
 
 
-<PlotlyFigure data={require('./assets/plot_data/e35fd122-46b2-41ed-a0c7-a0a76e52854a.json')} />
+<PlotlyFigure data={require('./assets/plot_data/13a4e521-eec8-41fa-a81b-bf1f0386c8fa.json')} />
 
 We can also retrieve a contour plot for the other metric, "l2norm" –– say, we are
 interested in seeing the response surface for parameters "x3" and "x4" for this one.
@@ -769,7 +769,7 @@ render(ax_client.get_contour_plot(param_x="x3", param_y="x4", metric_name="l2nor
 </CellOutput>
 
 
-<PlotlyFigure data={require('./assets/plot_data/3b7f39f3-19f5-45b4-9f5f-60d708fd0f8c.json')} />
+<PlotlyFigure data={require('./assets/plot_data/18c48779-ca3e-4b75-9a12-182ec5be3dc1.json')} />
 
 Here we plot the optimization trace, showing the progression of finding the point with
 the optimal objective:
@@ -780,7 +780,7 @@ render(
 )  # Objective_optimum is optional.
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/d9117049-feed-4c3e-a519-5e88475a8f86.json')} />
+<PlotlyFigure data={require('./assets/plot_data/403ca7cc-29a3-4be8-8b72-ee830f79479d.json')} />
 
 ## 7. Save / reload optimization to JSON / SQL
 

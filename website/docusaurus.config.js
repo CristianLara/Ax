@@ -86,10 +86,21 @@ module.exports={
           ],
         },
         {
-          "type": "docSidebar",
-          "sidebarId": "tutorials",
-          "label": "Tutorials",
-          "position": "left"
+          type: 'dropdown',
+          label: 'Tutorials',
+          position: 'left',
+          items: [
+            {
+              "type": "docSidebar",
+              "sidebarId": "tutorials",
+              "label": "Docs (new)",
+            },
+            {
+              "type": "docSidebar",
+              "sidebarId": "tutorials_old",
+              "label": "Docs (old)",
+            },
+          ],
         },
         {
           "type": "docSidebar",

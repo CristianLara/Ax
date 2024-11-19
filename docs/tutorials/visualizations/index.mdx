@@ -9,7 +9,7 @@ import {BokehFigure, PlotlyFigure} from "@site/src/components/Plotting.jsx";
 
 <LinkButtons
   githubUrl="https://github.com/cristianlara/Ax/blob/main/tutorials/visualizations.ipynb"
-  colabUrl="https://colab.research.google.com/github/cristianlara/Ax/blob/main/tutorials/visualizations.ipynb"
+  colabUrl="https://colab.research.google.com/github/cristianlara/Ax/blob/main/tutorials/visualizations/visualizations.ipynb"
 />
 
 # Visualizations
@@ -526,7 +526,7 @@ render(ax_client.get_contour_plot(param_x="x1", param_y="x2", metric_name="hartm
 </CellOutput>
 
 
-<PlotlyFigure data={require('./assets/plot_data/e7adea54-f931-4d62-ad1d-b09505825494.json')} />
+<PlotlyFigure data={require('./assets/plot_data/796cc9d7-e8b8-4771-8924-993dd40d0854.json')} />
 
 #### 2a. Interactive contour plot
 
@@ -538,7 +538,7 @@ model = ax_client.generation_strategy.model
 render(interact_contour(model=model, metric_name="hartmann6"))
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/75011a55-dbc4-4d56-9ced-878da038a0d4.json')} />
+<PlotlyFigure data={require('./assets/plot_data/a290a3f2-ebdb-4aeb-b50c-2902269bb714.json')} />
 
 ## 3. Tradeoff plots
 
@@ -553,7 +553,7 @@ value achievable for different bounds on the constraint)
 render(plot_objective_vs_constraints(model, "hartmann6", rel=False))
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/15cdc19a-2ad9-4c0e-b2e0-10d7bf81fdc2.json')} />
+<PlotlyFigure data={require('./assets/plot_data/43307c91-ee53-40d1-92e8-baadaf6fc791.json')} />
 
 ## 4. Cross-validation plots
 
@@ -566,7 +566,7 @@ cv_results = cross_validate(model)
 render(interact_cross_validation(cv_results))
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/412e4dbd-6adb-4691-8f60-ab91fd294ec5.json')} />
+<PlotlyFigure data={require('./assets/plot_data/70f54c02-87d8-4339-a7c1-a82a43dbab3d.json')} />
 
 ## 5. Slice plots
 
@@ -577,7 +577,7 @@ others. They serve a similar function as contour plots.
 render(plot_slice(model, "x2", "hartmann6"))
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/2c8e5228-0816-42b5-a52a-36d836cefbf9.json')} />
+<PlotlyFigure data={require('./assets/plot_data/9a8705f3-9bd6-4c66-8038-a9f5ac690a7b.json')} />
 
 ## 6. Tile plots
 
@@ -587,7 +587,7 @@ Tile plots are useful for viewing the effect of each arm.
 render(interact_fitted(model, rel=False))
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/ba1fa206-338c-40d3-9f30-9a452e4fcb50.json')} />
+<PlotlyFigure data={require('./assets/plot_data/dfbe3b5c-b0af-4b3c-9f4e-1f4f14b02078.json')} />
 
 ## Fix for plots that are not rendering
 
@@ -611,5 +611,5 @@ render(ax_client.get_contour_plot(param_x="x1", param_y="x2", metric_name="hartm
 </CellOutput>
 
 
-<PlotlyFigure data={require('./assets/plot_data/005e8eae-ca48-469c-ae72-d0ad77d7af5e.json')} />
+<PlotlyFigure data={require('./assets/plot_data/f0956fd8-c5cb-4840-9a5c-480649aaded9.json')} />
 

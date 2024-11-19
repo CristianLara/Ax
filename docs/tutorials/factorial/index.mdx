@@ -9,7 +9,7 @@ import {BokehFigure, PlotlyFigure} from "@site/src/components/Plotting.jsx";
 
 <LinkButtons
   githubUrl="https://github.com/cristianlara/Ax/blob/main/tutorials/factorial.ipynb"
-  colabUrl="https://colab.research.google.com/github/cristianlara/Ax/blob/main/tutorials/factorial.ipynb"
+  colabUrl="https://colab.research.google.com/github/cristianlara/Ax/blob/main/tutorials/factorial/factorial.ipynb"
 />
 
 # Factorial design with empirical Bayes and Thompson Sampling
@@ -363,7 +363,7 @@ assigned 5x weight.
 render(plot_fitted(models[0], metric="success_metric", rel=False))
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/7024bc19-ac5f-4863-bed1-a0b02e633600.json')} />
+<PlotlyFigure data={require('./assets/plot_data/b91eac18-216a-4311-b7af-f77c6440268f.json')} />
 
 ## Plot 2: Predicted outcomes for arms in last trial
 
@@ -374,7 +374,7 @@ the last trial (as well as the status quo, which appears throughout).
 render(plot_fitted(models[-1], metric="success_metric", rel=False))
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/cc6aa38d-f6b5-41a3-bf5f-0b614d886437.json')} />
+<PlotlyFigure data={require('./assets/plot_data/30d5d3ac-bb97-4e0a-b3b0-59a90afee9c4.json')} />
 
 As expected given our evaluation function, arms with higher levels perform better and
 are given higher weight. Below we see the arms that made it to the final trial.
@@ -415,7 +415,7 @@ from ax.utils.notebook.plotting import render
 render(plot_bandit_rollout(exp))
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/645a443b-4d8f-44c5-8704-848c9e710f92.json')} />
+<PlotlyFigure data={require('./assets/plot_data/7b848f34-ecdb-4879-a209-c2938fbe4579.json')} />
 
 ## Plot 4: Marginal Effects
 
@@ -430,5 +430,5 @@ from ax.plot.marginal_effects import plot_marginal_effects
 render(plot_marginal_effects(models[0], "success_metric"))
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/f13bf57d-05e6-4770-a5ec-8fee0f3bbe84.json')} />
+<PlotlyFigure data={require('./assets/plot_data/99608847-163c-4c21-8d59-28b5cf1b7d90.json')} />
 

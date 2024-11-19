@@ -9,7 +9,7 @@ import {BokehFigure, PlotlyFigure} from "@site/src/components/Plotting.jsx";
 
 <LinkButtons
   githubUrl="https://github.com/cristianlara/Ax/blob/main/tutorials/gpei_hartmann_loop.ipynb"
-  colabUrl="https://colab.research.google.com/github/cristianlara/Ax/blob/main/tutorials/gpei_hartmann_loop.ipynb"
+  colabUrl="https://colab.research.google.com/github/cristianlara/Ax/blob/main/tutorials/gpei_hartmann_loop/gpei_hartmann_loop.ipynb"
 />
 
 # Loop API Example on Hartmann6
@@ -493,13 +493,13 @@ Here we arbitrarily select "x1" and "x2" as the two parameters to plot for both 
 render(plot_contour(model=model, param_x="x1", param_y="x2", metric_name="hartmann6"))
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/872674ed-a5d3-4bb8-a5d5-cb627cafca37.json')} />
+<PlotlyFigure data={require('./assets/plot_data/2e47e8b5-10d9-40a4-b086-20d3a1e17253.json')} />
 
 ```python
 render(plot_contour(model=model, param_x="x1", param_y="x2", metric_name="l2norm"))
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/fe757faa-9243-4c84-bd21-9357e5a2af1f.json')} />
+<PlotlyFigure data={require('./assets/plot_data/8668504b-065e-49a2-a7e7-490a479db039.json')} />
 
 We also plot optimization trace, which shows best hartmann6 objective value seen by each
 iteration of the optimization:
@@ -519,5 +519,5 @@ best_objective_plot = optimization_trace_single_method(
 render(best_objective_plot)
 ```
 
-<PlotlyFigure data={require('./assets/plot_data/0e5b7ca7-5259-4909-9fad-1624ef0fc02a.json')} />
+<PlotlyFigure data={require('./assets/plot_data/4f4380c6-32ea-462e-8e41-a1f92320c252.json')} />
 
