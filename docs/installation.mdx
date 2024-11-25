@@ -9,10 +9,27 @@ title: Installation
 
 You need Python 3.10 or later to run Ax. We recommend installing Ax via `pip`, even if using a Conda environment.
 
-```shell
-conda install pytorch torchvision -c pytorch  # OSX only (details below)
-pip install ax-platform
-```
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+  <TabItem value="windows" label="Windows" default>
+    ```bash
+    pip install ax-platform
+    ```
+  </TabItem>
+  <TabItem value="linux" label="Linux">
+    ```bash
+    pip install ax-platform
+    ```
+  </TabItem>
+  <TabItem value="macos" label="MacOS">
+    ```bash
+    conda install pytorch torchvision -c pytorch
+    pip install ax-platform
+    ```
+  </TabItem>
+</Tabs>
 
 Installation will use Python wheels from PyPI, available for [OSX, Linux, and Windows](https://pypi.org/project/ax-platform/#files).
 
