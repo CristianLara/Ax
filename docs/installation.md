@@ -2,24 +2,12 @@
 id: installation
 title: Installation
 ---
-## Requirements
-
-You need Python 3.10 or later to run Ax.
-
-The required Python dependencies are:
-
--   [botorch][def]
--   jinja2
--   pandas
--   scipy
--   sklearn
--   plotly &gt;=2.2.1
 
 ## Stable Version
 
 ### Installing via pip
 
-We recommend installing Ax via pip (even if using Conda environment):
+You need Python 3.10 or later to run Ax. We recommend installing Ax via pip, even if using a Conda environment.
 
 ```shell
 conda install pytorch torchvision -c pytorch  # OSX only (details below)
