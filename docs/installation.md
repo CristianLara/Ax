@@ -7,7 +7,7 @@ title: Installation
 
 ### Installing via pip
 
-You need Python 3.10 or later to run Ax. We recommend installing Ax via pip, even if using a Conda environment.
+You need Python 3.10 or later to run Ax. We recommend installing Ax via `pip`, even if using a Conda environment.
 
 ```shell
 conda install pytorch torchvision -c pytorch  # OSX only (details below)
