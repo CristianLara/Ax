@@ -121,7 +121,7 @@ module.exports={
     },
     "docs": {
         "sidebar": {
-          autoCollapseCategories: true,
+          autoCollapseCategories: false,
           hideable: true,
         },
     },
