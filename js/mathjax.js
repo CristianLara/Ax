@@ -1,1 +1,0 @@
-window.MathJax={tex2jax:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]],processEscapes:!0,processEnvironments:!0},displayAlign:"center","HTML-CSS":{styles:{".MathJax_Display":{margin:0,"text-align":"center !important"}},linebreaks:{automatic:!0}}};
