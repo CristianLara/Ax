@@ -62,9 +62,14 @@ dirhtml:
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/api."
 
 singlehtml:
-	$(SPHINXBUILD) -b singlehtml $(ALLSPHINXOPTS) $(BUILDDIR)/singlehtml
+	$(SPHINXBUILD) -b singlehtml $(ALLSPHINXOPTS) $(BUILDDIR)/api
 	@echo
-	@echo "Build finished. The HTML page is in $(BUILDDIR)/singlehtml."
+	@echo "Build finished. The HTML page is in $(BUILDDIR)/api."
+
+markdown:
+	$(SPHINXBUILD) -b markdown $(ALLSPHINXOPTS) $(BUILDDIR)/api
+	@echo
+	@echo "Build finished. The HTML page is in $(BUILDDIR)/api."
 
 pickle:
 	$(SPHINXBUILD) -b pickle $(ALLSPHINXOPTS) $(BUILDDIR)/pickle
