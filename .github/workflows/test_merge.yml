@@ -16,4 +16,4 @@ jobs:
         ref: 'cris-testing-merge-release-branch'
     - name: Sync release branch with main
       run: |
-        git fetch origin && git merge main
+        git fetch origin && git merge origin/main
