@@ -6,7 +6,7 @@ module.exports={
   "title": "Ax",
   "tagline": "Adaptive Experimentation Platform",
   "url": "https://ax.dev",
-  "baseUrl": "/",
+  "baseUrl": "/Ax/",
   "organizationName": "facebook",
   "projectName": "Ax",
   "scripts": [
@@ -42,9 +42,9 @@ module.exports={
         "theme": {
           "customCss": "src/css/customTheme.css"
         },
-        "gtag": {
-          "trackingID": "UA-139570076-1"
-        }
+        // "gtag": {
+        //   "trackingID": "UA-139570076-1"
+        // }
       }
     ]
   ],
