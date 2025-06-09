@@ -1,0 +1,258 @@
+---
+title: Trial-level Early Stopping
+sidebar_label: Trial-level Early Stopping
+---
+
+import LinkButtons from "@site/src/components/LinkButtons.jsx";
+import CellOutput from "@site/src/components/CellOutput.jsx";
+import {PlotlyFigure} from "@site/src/components/Plotting.jsx";
+
+<LinkButtons
+  githubUrl="https://github.com/facebook/ax/blob/main/tutorials/early_stopping/early_stopping.ipynb"
+  colabUrl="https://colab.research.google.com/github/facebook/ax/blob/main/tutorials/early_stopping/early_stopping.ipynb"
+/>
+
+# Trial-level early stopping
+
+Trial-level early stopping aims to monitor the results of expensive evaluations with
+timeseries-like data and terminate those that are unlikely to produce promising results
+prior to completing that evaluation. This reduces computational waste, and enables the
+same amount of resources to explore more configurations. Early stopping is useful for
+expensive to evaluate problems where stepwise information is available on the way to the
+final measurement.
+
+Like the [Getting Started tutorial](../getting_started) we'll be minimizing the
+Hartmann6 function, but this time we've modified it to incorporate a new parameter $t$
+which allows the function to produce timeseries-like data where the value returned is
+closer and closer to Hartmann6's true value as $t$ increases. At $t = 100$ the function
+will simply return Hartmann6's unaltered value.
+
+$$
+
+f(x, t) = hartmann6(x) - log_2(t/100)
+
+$$
+
+While the function is synthetic, the workflow captures the intended principles for this
+tutorial and is similar to the process of training typical machine learning models.
+
+## Learning Objectives
+
+- Understand when time-series-like data can be used in an optimization experiment
+- Run a simple optimization experiment with early stopping
+- Configure details of an early stopping strategy
+- Analyze the results of the optimization
+
+## Prerequisites
+
+- Familiarity with Python and basic programming concepts
+- Understanding of [adaptive experimentation](../../intro-to-ae.mdx) and
+  [Bayesian optimization](../../intro-to-bo.mdx)
+- [Getting Started with Ax](../getting_started/index.mdx)
+
+## Step 1: Import Necessary Modules
+
+First, ensure you have all the necessary imports:
+
+```python
+import numpy as np
+from ax.api.client import Client
+from ax.api.configs import  RangeParameterConfig
+```
+
+## Step 2: Initialize the Client
+
+Create an instance of the `Client` to manage the state of your experiment.
+
+```python
+client = Client()
+```
+
+## Step 3: Configure the Experiment
+
+The `Client` instance can be configured with a series of `Config`s that define how the
+experiment will be run.
+
+The Hartmann6 problem is usually evaluated on the hypercube $x_i \in (0, 1)$, so we will
+define six identical `RangeParameterConfig`s with these bounds.
+
+You may specify additional features like parameter constraints to further refine the
+search space and parameter scaling to help navigate parameters with nonuniform effects.
+
+```python
+# Define six float parameters for the Hartmann6 function
+parameters = [
+    RangeParameterConfig(
+        name=f"x{i + 1}", parameter_type="float", bounds=(0, 1)
+    )
+    for i in range(6)
+]
+
+client.configure_experiment(parameters=parameters)
+```
+
+## Step 4: Configure Optimization
+
+Now, we must configure the objective for this optimization, which we do using
+`Client.configure_optimization`. This method expects a string `objective`, an expression
+containing either a single metric to maximize, a linear combination of metrics to
+maximize, or a tuple of multiple metrics to jointly maximize. These expressions are
+parsed using [SymPy](https://www.sympy.org/en/index.html). For example:
+
+- `"score"` would direct Ax to maximize a metric named score
+- `"-loss"` would direct Ax to Ax to minimize a metric named loss
+- `"task_0 + 0.5 * task_1"` would direct Ax to maximize the sum of two task scores,
+  downweighting task_1 by a factor of 0.5
+- `"score, -flops"` would direct Ax to simultaneously maximize score while minimizing
+  flops
+
+See these recipes for more information on configuring
+[objectives](../../recipes/multi-objective-optimization) and
+[outcome constraints](../../recipes/outcome-constraints).
+
+```python
+client.configure_optimization(objective="-hartmann6")
+```
+
+## Step 5: Run Trials with early stopping
+
+Here, we will configure the ask-tell loop.
+
+We begin by defining our Hartmann6 function as written above. Remember, this is just an
+example problem and any Python function can be substituted here.
+
+Then we will iteratively do the following:
+
+- Call `client.get_next_trials` to "ask" Ax for a parameterization to evaluate
+- Evaluate `hartmann6_curve` using those parameters in an inner loop to simulate the
+  generation of timeseries data
+- "Tell" Ax the partial result using `client.attach_data`
+- Query whether the trial should be stopped via `client.should_stop_trial_early`
+- Stop the underperforming trial and report back to Ax that is has been stopped
+
+This loop will run multiple trials to optimize the function.
+
+Ax will configure an EarlyStoppingStrategy when `should_stop_trial_early` is called for
+the first time. By default Ax uses a Percentile early stopping strategy which will
+terminate a trial early if its performance falls below a percentile threshold when
+compared to other trials at the same step. Early stopping can only occur after a minimum
+number of `progressions` to prevent premature early stopping. This validates that both
+enough data is gathered to make a decision and there is a minimum number of completed
+trials with curve data; these completed trials establish a baseline.
+
+```python
+# Hartmann6 function
+def hartmann6(x1, x2, x3, x4, x5, x6):
+    alpha = np.array([1.0, 1.2, 3.0, 3.2])
+    A = np.array(
+        [
+            [10, 3, 17, 3.5, 1.7, 8],
+            [0.05, 10, 17, 0.1, 8, 14],
+            [3, 3.5, 1.7, 10, 17, 8],
+            [17, 8, 0.05, 10, 0.1, 14],
+        ]
+    )
+    P = 10**-4 * np.array(
+        [
+            [1312, 1696, 5569, 124, 8283, 5886],
+            [2329, 4135, 8307, 3736, 1004, 9991],
+            [2348, 1451, 3522, 2883, 3047, 6650],
+            [4047, 8828, 8732, 5743, 1091, 381],
+        ]
+    )
+
+    outer = 0.0
+    for i in range(4):
+        inner = 0.0
+        for j, x in enumerate([x1, x2, x3, x4, x5, x6]):
+            inner += A[i, j] * (x - P[i, j]) ** 2
+        outer += alpha[i] * np.exp(-inner)
+    return -outer
+
+
+# Hartmann6 function with additional t term such that
+# hartmann6(X) == hartmann6_curve(X, t=100)
+def hartmann6_curve(x1, x2, x3, x4, x5, x6, t):
+    return hartmann6(x1, x2, x3, x4, x5, x6) - np.log2(t / 100)
+
+
+(
+    hartmann6(0.1, 0.45, 0.8, 0.25, 0.552, 1.0),
+    hartmann6_curve(0.1, 0.45, 0.8, 0.25, 0.552, 1.0, 100),
+)
+```
+
+```python
+maximum_progressions = 100  # Observe hartmann6_curve over 100 progressions
+
+for _ in range(30):  # Run 30 rounds of trials
+    trials = client.get_next_trials(max_trials=3)
+    for trial_index, parameters in trials.items():
+        for t in range(1, maximum_progressions + 1):
+            raw_data = {"hartmann6": hartmann6_curve(t=t, **parameters)}
+
+            # On the final reading call complete_trial and break, else call attach_data
+            if t == maximum_progressions:
+                client.complete_trial(
+                    trial_index=trial_index, raw_data=raw_data, progression=t
+                )
+                break
+
+            client.attach_data(
+                trial_index=trial_index, raw_data=raw_data, progression=t
+            )
+
+            # If the trial is underperforming, stop it
+            if client.should_stop_trial_early(trial_index=trial_index):
+                client.mark_trial_early_stopped(trial_index=trial_index)
+                break
+```
+
+## Step 6: Analyze Results
+
+After running trials, you can analyze the results. Most commonly this means extracting
+the parameterization from the best performing trial you conducted.
+
+```python
+best_parameters, prediction, index, name = client.get_best_parameterization()
+print("Best Parameters:", best_parameters)
+print("Prediction (mean, variance):", prediction)
+```
+
+## Step 7: Compute Analyses
+
+Ax can also produce a number of analyses to help interpret the results of the experiment
+via `client.compute_analyses`. Users can manually select which analyses to run, or can
+allow Ax to select which would be most relevant. In this case Ax selects the following:
+
+- **Parrellel Coordinates Plot** shows which parameterizations were evaluated and what
+  metric values were observed -- this is useful for getting a high level overview of how
+  thoroughly the search space was explored and which regions tend to produce which
+  outcomes
+- **Progression Plot** shows each partial observation observed by Ax for each trial in a
+  timeseries
+- **Sensitivity Analysis Plot** shows which parameters have the largest affect on the
+  objective using
+  [Sobol Indicies](https://en.wikipedia.org/wiki/Variance-based_sensitivity_analysis)
+- **Slice Plot** shows how the model predicts a single parameter effects the objective
+  along with a confidence interval
+- **Contour Plot** shows how the model predicts a pair of parameters effects the
+  objective as a 2D surface
+- **Summary** lists all trials generated along with their parameterizations,
+  observations, and miscellaneous metadata
+- **Cross Validation** helps to visualize how well the surrogate model is able to
+  predict out of sample points
+
+```python
+# display=True instructs Ax to sort then render the resulting analyses
+cards = client.compute_analyses(display=True)
+```
+
+## Conclusion
+
+This tutorial demonstates Ax's early stopping capabilities, which utilize
+timeseries-like data to monitor the results of expensive evaluations and terminate those
+that are unlikely to produce promising results, freeing up resources to explore more
+configurations. This can be used in a number of applications, and is especially useful
+in machine learning contexts.
+
